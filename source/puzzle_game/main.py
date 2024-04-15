@@ -1,10 +1,11 @@
+# make sure you run in the directory containing font.ttf
+# its the TrueType font file for the games font
 import sys
 import sdl2
 import sdl2.ext
 import sdl2.sdlttf
 import random
 import copy
-
 
 def load_font(font_path, font_size):
     font = sdl2.sdlttf.TTF_OpenFont(font_path.encode('utf-8'), font_size)
@@ -73,8 +74,7 @@ class PuzzlePiece:
               return (255,0, 0)
          else:
               return (0, 255, 255)
-     
-     
+         
 class PuzzleGrid:
     score = 0
     def __init__(self,rend, cols, rows, offset_x, offset_y):
