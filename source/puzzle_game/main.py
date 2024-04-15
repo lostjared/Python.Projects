@@ -28,7 +28,9 @@ class PuzzlePiece:
          self.blocks[2] = tblock[1]
 
     def intToColor(self, i):
-         if i == 0:
+         if i < 0:
+              return (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+         elif i == 0:
               return (0, 0, 0)
          elif i == 1:
               return (0,255,0)
@@ -58,7 +60,7 @@ class PuzzleGrid:
     def draw(self):
         rect = sdl2.SDL_Rect(self.off_x, self.off_y, self.w*(32*3), self.h*(16*3))
         sdl2.SDL_SetRenderDrawColor(self.rend.sdlrenderer, 255,255,255,255)
-        sdl2.SDL_RenderFillRect(self.rend.renderer, rect)
+        sdl2.SDL_RenderFillRect(self.rend.sdlrenderer, rect)
         for x1 in range(0, self.w):
            for y1 in range(0, self.h):
                 rect = sdl2.SDL_Rect(self.off_x+(x1*(32*3))+1, self.off_y+(y1*(16*3))+1, 32*3-2, 14*3-2)
@@ -68,6 +70,7 @@ class PuzzleGrid:
         self.draw_piece()
         
     def draw_piece(self):
+        self.chk_blocks()
         rect1 = sdl2.SDL_Rect(self.off_x+(self.piece.x*(32*3)), self.off_y+(self.piece.y*(16*3)), 32*3, 16*3)
         rect2 = sdl2.SDL_Rect(self.off_x+(self.piece.x*(32*3)), self.off_y+((self.piece.y+1)*(16*3)), 32*3, 16*3)
         rect3 = sdl2.SDL_Rect(self.off_x+(self.piece.x*(32*3)), self.off_y+((self.piece.y+2)*(16*3)), 32*3, 16*3)
@@ -88,8 +91,36 @@ class PuzzleGrid:
               return True
          return False
 
+    def test_block(self, x, y, color):
+         if (x >= 0 and y >= 0 and x < 8 and y < 17 and self.puzzle_grid[x][y] >= 1 and self.puzzle_grid[x][y] == color):
+              return True
+         return False
+
+    def chk_blocks(self):
+        for x in range(0, self.w):
+              for y in range(0, self.h):
+                   if self.puzzle_grid[x][y] < 0:
+                        self.puzzle_grid[x][y] -= 1
+                        if self.puzzle_grid[x][y] < -200:
+                             self.puzzle_grid[x][y] = 0
+         
+
+        for x in range(0, self.w):
+              for y in range(0, self.h - 2):
+                color = self.puzzle_grid[x][y]
+                if color >= 1:
+                        if self.test_block(x, y+1, color)  and self.test_block(x, y+2, color):
+                             self.puzzle_grid[x][y] = -1
+                             self.puzzle_grid[x][y+1] = -1
+                             self.puzzle_grid[x][y+2] = -1
+                             if self.test_block(x, y+3, color):
+                                 self.puzzle_grid[x][y+3] = -1
+
+
+              
+                    
     def proc(self):
-          self.move_down()
+           self.move_down()
     
     def move_left(self):    
          if(self.piece.x > 0 and self.test_piece(self.piece.x-1, self.piece.y)):
@@ -136,15 +167,12 @@ class Game:
                     
     def move_left(self):
         self.grid.move_left()
-        pass
     def move_right(self):
         self.grid.move_right()
-        pass
     def shift(self):
          self.grid.piece.shift_blocks()
     def down(self):
          self.grid.move_down()
-
     def proc(self):
          self.grid.proc()
 
