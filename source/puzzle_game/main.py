@@ -1,35 +1,87 @@
 import sys
 import sdl2
 import sdl2.ext
+import random
 
 class PuzzlePiece:
-     def __init__(self):
+    def __init__(self):
           self.blocks = [0, 0, 0]
           self.x = 0
           self.y = 0
           self.mode = 0
-     def reset_piece(self):
+
+
+    def reset_piece(self):
           self.blocks = [0, 0, 0]
+          while self.blocks[0] == self.blocks[1] and self.blocks[0] == self.blocks[2]:
+            self.blocks[0] = random.randint(1, 6)
+            self.blocks[1] = random.randint(1, 6)
+            self.blocks[2] = random.randint(1, 6)
+          self.x = 3
+          self.y = 0
+          self.mode = 0
+
+    def intToColor(self, i):
+         if i == 0:
+              return (0, 0, 0)
+         elif i == 1:
+              return (0,255,0)
+         elif i == 2:
+              return (0,0,255)
+         elif i == 3:
+              return (255,0,255)
+         elif i == 4:
+              return (255,255,0)
+         elif i == 5:
+              return (255,0, 0)
+         else:
+              return (0, 255, 255)
+     
+
+
      
 class PuzzleGrid:
-     def __init__(self,rend, cols, rows, offset_x, offset_y):
+    
+    def __init__(self,rend, cols, rows, offset_x, offset_y):
           self.piece = PuzzlePiece()
+          self.piece.reset_piece()
           self.rend = rend
           self.w = cols
           self.h = rows
           self.off_x = offset_x
           self.off_y = offset_y
-          self.puzzle_grid = [[0 for _ in range(cols)] for _ in range(rows)]
+          self.puzzle_grid = [[0 for _ in range(rows)] for _ in range(cols)]
+          
 
           
-     def draw(self):
-          for x1 in range(0, self.w):
-               for y1 in range(0, self.h):
-                    rect = sdl2.SDL_Rect(self.off_x+(x1*(32*3)), self.off_y+(y1*(16*3)), 32*3-2, 14*3-2)
-                    sdl2.SDL_SetRenderDrawColor(self.rend.sdlrenderer, 255, 255, 255, 255)
-                    sdl2.SDL_RenderFillRect(self.rend.sdlrenderer, rect)
+    def draw(self):
+        rect = sdl2.SDL_Rect(self.off_x, self.off_y, self.w*(32*3), self.h*(16*3))
+        sdl2.SDL_SetRenderDrawColor(self.rend.sdlrenderer, 255,255,255,255)
+        sdl2.SDL_RenderFillRect(self.rend.renderer, rect)
+        for x1 in range(0, self.w):
+           for y1 in range(0, self.h):
+                rect = sdl2.SDL_Rect(self.off_x+(x1*(32*3))+1, self.off_y+(y1*(16*3))+1, 32*3-2, 14*3-2)
+                colorval = self.piece.intToColor(self.puzzle_grid[x1][y1])
+                sdl2.SDL_SetRenderDrawColor(self.rend.sdlrenderer, colorval[0], colorval[1], colorval[2], 255)
+                sdl2.SDL_RenderFillRect(self.rend.sdlrenderer, rect)           
+        self.draw_piece()
         
-     def proc(self):
+    def draw_piece(self):
+        rect1 = sdl2.SDL_Rect(self.off_x+(self.piece.x*(32*3)), self.off_y+(self.piece.y*(16*3)), 32*3, 16*3)
+        rect2 = sdl2.SDL_Rect(self.off_x+(self.piece.x*(32*3)), self.off_y+(self.piece.y+1*(16*3)), 32*3, 16*3)
+        rect3 = sdl2.SDL_Rect(self.off_x+(self.piece.x*(32*3)), self.off_y+(self.piece.y+2*(16*3)), 32*3, 16*3)
+        color1 = self.piece.intToColor(self.piece.blocks[0])
+        color2 = self.piece.intToColor(self.piece.blocks[1])
+        color3 = self.piece.intToColor(self.piece.blocks[2])
+
+        sdl2.SDL_SetRenderDrawColor(self.rend.sdlrenderer, color1[0], color1[1], color1[2], 255)
+        sdl2.SDL_RenderFillRect(self.rend.sdlrenderer, rect1)
+        sdl2.SDL_SetRenderDrawColor(self.rend.sdlrenderer, color2[0], color2[1], color2[2], 255)
+        sdl2.SDL_RenderFillRect(self.rend.sdlrenderer, rect2)
+        sdl2.SDL_SetRenderDrawColor(self.rend.sdlrenderer, color3[0], color3[1], color3[2], 255)
+        sdl2.SDL_RenderFillRect(self.rend.sdlrenderer, rect3)
+        
+    def proc(self):
           pass
      
 class Game:
