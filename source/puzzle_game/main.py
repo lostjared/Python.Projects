@@ -2,6 +2,7 @@ import sys
 import sdl2
 import sdl2.ext
 import random
+import copy
 
 class PuzzlePiece:
     def __init__(self):
@@ -20,6 +21,12 @@ class PuzzlePiece:
           self.x = 3
           self.y = 0
           self.mode = 0
+
+    def shift_blocks(self):
+         tblock = copy.deepcopy(self.blocks)
+         self.blocks[0] = tblock[2]
+         self.blocks[1] = tblock[0]
+         self.blocks[2] = tblock[1]
 
     def intToColor(self, i):
          if i == 0:
@@ -41,7 +48,6 @@ class PuzzlePiece:
 
      
 class PuzzleGrid:
-    
     def __init__(self,rend, cols, rows, offset_x, offset_y):
           self.piece = PuzzlePiece()
           self.piece.reset_piece()
@@ -51,8 +57,6 @@ class PuzzleGrid:
           self.off_x = offset_x
           self.off_y = offset_y
           self.puzzle_grid = [[0 for _ in range(rows)] for _ in range(cols)]
-          
-
           
     def draw(self):
         rect = sdl2.SDL_Rect(self.off_x, self.off_y, self.w*(32*3), self.h*(16*3))
@@ -83,6 +87,21 @@ class PuzzleGrid:
         
     def proc(self):
           pass
+    
+    def move_left(self):
+         
+         if(self.piece.x > 0):
+              self.piece.x -= 1
+
+
+
+         pass
+    def move_right(self):
+         
+         if(self.piece.x < 7):
+              self.piece.x += 1
+
+         pass
      
 class Game:
     def __init__(self, window):
@@ -92,8 +111,6 @@ class Game:
         rect = sdl2.SDL_Rect(0, 0, 1440, 1080)
         sdl2.SDL_SetRenderDrawColor(self.renderer.sdlrenderer, 0, 0, 0, 255)
         self.renderer.clear()
-         # sdl2.SDL_SetRenderDrawColor(self.renderer.sdlrenderer,255, 255, 255, 255)
-        #  sdl2.SDL_RenderFillRect(self.renderer.sdlrenderer, rect)
         self.grid.draw()
         self.renderer.present()
 
@@ -103,13 +120,17 @@ class Game:
                     self.move_left()
                 elif(event.key.keysym.sym == sdl2.SDLK_RIGHT):
                     self.move_right()
+                elif(event.key.keysym.sym == sdl2.SDLK_UP):
+                     self.shift()
                     
     def move_left(self):
-        print("move left")
+        self.grid.move_left()
         pass
     def move_right(self):
-        print("move right")
+        self.grid.move_right()
         pass
+    def shift(self):
+         self.grid.piece.shift_blocks()
 
 def main():
     sdl2.ext.init()
