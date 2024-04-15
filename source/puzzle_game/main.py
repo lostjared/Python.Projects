@@ -107,8 +107,7 @@ class PuzzleGrid:
                         self.puzzle_grid[x][y+1] = self.puzzle_grid[x][y]
                         self.puzzle_grid[x][y] = 0
 
-    def chk_blocks(self):
-        
+    def chk_blocks(self):    
         for x in range(0, self.w):
               for y in range(0, self.h):
                    if self.puzzle_grid[x][y] < 0:
@@ -128,14 +127,46 @@ class PuzzleGrid:
                          self.score += 1
                          if self.test_block(x, y+3, color):
                               self.puzzle_grid[x][y+3] = -1
+                              self.score += 1
+                              if self.test_block(x, y+4, color):
+                                   self.puzzle_grid[x][y+4] = -1
+                                   self.score += 1
+
                     if self.test_block(x+1, y, color) and self.test_block(x+2, y, color):
-                             self.puzzle_grid[x][y] = -1
-                             self.puzzle_grid[x+1][y] = -1
-                             self.puzzle_grid[x+2][y] = -1
-                             self.score += 1
-                             if self.test_block(x+3, y, color):
-                                  self.puzle_grid[x][y+3] = -1
-                    
+                         self.puzzle_grid[x][y] = -1
+                         self.puzzle_grid[x+1][y] = -1
+                         self.puzzle_grid[x+2][y] = -1
+                         self.score += 1
+                         if self.test_block(x+3, y, color):
+                              self.puzle_grid[x][y+3] = -1
+                              self.score += 1
+                              if self.test_block(x+4, y, color):
+                                   self.puzzle_grid[x+4][y] = -1
+                                   self.score += 1
+                    if self.test_block(x+1, y+1, color) and self.test_block(x+2, y+2, color):
+                         self.puzzle_grid[x][y] = -1
+                         self.puzzle_grid[x+1][y+1] = -1
+                         self.puzzle_grid[x+2][y+2] = -1
+                         self.score += 1
+                         if self.test_block(x+3, y+3, color):
+                              self.puzzle_grid[x+3][y+3] = -1
+                              self.score += 1
+                              if self.test_block(x+4, y+4, color):
+                                   self.puzzle_grid[x+4][y+4] = -1
+                                   self.score += 1
+
+                    if self.test_block(x+1, y-1, color) and self.test_block(x+1, y-2, color):
+                         self.puzzle_grid[x][y] = -1
+                         self.puzzle_grid[x+1][y-1] = -1
+                         self.puzzle_grid[x+2][y-2] = -1
+                         self.score += 1
+                         if self.test_block(x+3, y-3, color):
+                              self.puzzle_grid[x+3][y-3] = -1
+                              self.score += 1
+                              if self.test_block(x+4, y-4, color):
+                                   self.puzzle_grid[x+4][y-4] = -1
+                                   self.score += 1
+
     def proc(self):
            self.move_down()
     
