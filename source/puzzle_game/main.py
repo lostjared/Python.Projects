@@ -72,6 +72,7 @@ class PuzzleGrid:
         
     def draw_piece(self):
         self.chk_blocks()
+        self.proc_blocks()
         rect1 = sdl2.SDL_Rect(self.off_x+(self.piece.x*(32*3)), self.off_y+(self.piece.y*(16*3)), 32*3, 16*3)
         rect2 = sdl2.SDL_Rect(self.off_x+(self.piece.x*(32*3)), self.off_y+((self.piece.y+1)*(16*3)), 32*3, 16*3)
         rect3 = sdl2.SDL_Rect(self.off_x+(self.piece.x*(32*3)), self.off_y+((self.piece.y+2)*(16*3)), 32*3, 16*3)
@@ -96,8 +97,18 @@ class PuzzleGrid:
          if (x >= 0 and y >= 0 and x < 8 and y < 17 and self.puzzle_grid[x][y] >= 1 and self.puzzle_grid[x][y] == color):
               return True
          return False
+    
+    def proc_blocks(self):
+         for x in range(0, self.w):
+              for y in range(0, self.h-1):
+                   color = self.puzzle_grid[x][y]
+                   color2 = self.puzzle_grid[x][y+1]
+                   if color >= 1 and color2 == 0:
+                        self.puzzle_grid[x][y+1] = self.puzzle_grid[x][y]
+                        self.puzzle_grid[x][y] = 0
 
     def chk_blocks(self):
+        
         for x in range(0, self.w):
               for y in range(0, self.h):
                    if self.puzzle_grid[x][y] < 0:
@@ -124,10 +135,6 @@ class PuzzleGrid:
                              self.score += 1
                              if self.test_block(x+3, y, color):
                                   self.puzle_grid[x][y+3] = -1
-
-
-
-              
                     
     def proc(self):
            self.move_down()
