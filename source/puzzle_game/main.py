@@ -1,8 +1,37 @@
 import sys
 import sdl2
 import sdl2.ext
+import sdl2.sdlttf
 import random
 import copy
+
+
+def load_font(font_path, font_size):
+    font = sdl2.sdlttf.TTF_OpenFont(font_path.encode('utf-8'), font_size)
+    if not font:
+        print("Failed to load the font: %s" % sdl2.sdlttf.TTF_GetError())
+    return font
+
+def create_text_surface(font, text, color):
+    sdl_color = sdl2.SDL_Color(color[0], color[1], color[2])
+    surface = sdl2.sdlttf.TTF_RenderText_Solid(font, text.encode('utf-8'), sdl_color)
+    if not surface:
+        print("Failed to create text surface: %s" % sdl2.sdlttf.TTF_GetError())
+    return surface
+
+def create_texture_from_surface(renderer, surface):
+    texture = sdl2.SDL_CreateTextureFromSurface(renderer.sdlrenderer, surface)
+    if not texture:
+        print("Failed to create texture: %s" % sdl2.SDL_GetError())
+    return texture
+
+def printtext(rend, font, text, color, dst):
+     surf = create_text_surface(font, text, color)
+     text = create_texture_from_surface(rend, surf)
+     rect = sdl2.SDL_Rect(dst[0], dst[1], surf.contents.w, surf.contents.h)
+     sdl2.SDL_RenderCopy(rend.sdlrenderer, text, None, rect)
+     sdl2.SDL_DestroyTexture(text)
+     sdl2.SDL_FreeSurface(surf)
 
 class PuzzlePiece:
     def __init__(self):
@@ -195,11 +224,12 @@ class Game:
           self.grid = PuzzleGrid(self.renderer, 8, 17,325, 25)
           self.speed = 1000
 
-    def draw(self):
+    def draw(self, font):
         rect = sdl2.SDL_Rect(0, 0, 1440, 1080)
         sdl2.SDL_SetRenderDrawColor(self.renderer.sdlrenderer, 0, 0, 0, 255)
         self.renderer.clear()
         self.grid.draw()
+        printtext(self.renderer, font, "Score: %d" % (self.grid.score), (255,255,255), (50, 50))
         self.renderer.present()
 
     def event(self, event):
@@ -225,8 +255,13 @@ class Game:
          self.grid.proc()
 
 
-def main():
+def main(args):
     sdl2.ext.init()
+    if sdl2.sdlttf.TTF_Init() == -1:
+         print("TTF_Font: %s" % sdl2.sdlttf.TTF_GetError())
+         return 1
+    font = load_font("font.ttf", 32)
+
     window =  sdl2.ext.Window("Puzzle Game [ Python Edition ]", size=(1440, 1080))
     ticks = sdl2.SDL_GetTicks()
     time_t = 0
@@ -242,7 +277,7 @@ def main():
             else:
                 gameobj.event(event)
 
-        gameobj.draw()
+        gameobj.draw(font)
         nticks = sdl2.SDL_GetTicks()
         time_t += nticks-ticks
         ticks = nticks
@@ -251,7 +286,10 @@ def main():
              time_t = 0
 
         window.refresh()
+    sdl2.sdlttf.TTF_CloseFont(font)
+    sdl2.sdlttf.TTF_Quit()
+    sdl2.ext.quit()
     return 0
 
 if __name__ == "__main__":
-        sys.exit(main())
+        sys.exit(main(sys.argv))
