@@ -47,6 +47,7 @@ class PuzzlePiece:
      
      
 class PuzzleGrid:
+    score = 0
     def __init__(self,rend, cols, rows, offset_x, offset_y):
           self.piece = PuzzlePiece()
           self.piece.reset_piece()
@@ -106,15 +107,24 @@ class PuzzleGrid:
          
 
         for x in range(0, self.w):
-              for y in range(0, self.h - 2):
+              for y in range(0, self.h):
                 color = self.puzzle_grid[x][y]
                 if color >= 1:
-                        if self.test_block(x, y+1, color)  and self.test_block(x, y+2, color):
+                    if self.test_block(x, y+1, color)  and self.test_block(x, y+2, color):
+                         self.puzzle_grid[x][y] = -1
+                         self.puzzle_grid[x][y+1] = -1
+                         self.puzzle_grid[x][y+2] = -1
+                         self.score += 1
+                         if self.test_block(x, y+3, color):
+                              self.puzzle_grid[x][y+3] = -1
+                    if self.test_block(x+1, y, color) and self.test_block(x+2, y, color):
                              self.puzzle_grid[x][y] = -1
-                             self.puzzle_grid[x][y+1] = -1
-                             self.puzzle_grid[x][y+2] = -1
-                             if self.test_block(x, y+3, color):
-                                 self.puzzle_grid[x][y+3] = -1
+                             self.puzzle_grid[x+1][y] = -1
+                             self.puzzle_grid[x+2][y] = -1
+                             self.score += 1
+                             if self.test_block(x+3, y, color):
+                                  self.puzle_grid[x][y+3] = -1
+
 
 
               
