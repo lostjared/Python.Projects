@@ -44,8 +44,6 @@ class PuzzlePiece:
          else:
               return (0, 255, 255)
      
-
-
      
 class PuzzleGrid:
     def __init__(self,rend, cols, rows, offset_x, offset_y):
@@ -85,24 +83,22 @@ class PuzzleGrid:
         sdl2.SDL_SetRenderDrawColor(self.rend.sdlrenderer, color3[0], color3[1], color3[2], 255)
         sdl2.SDL_RenderFillRect(self.rend.sdlrenderer, rect3)
         
+
+    def test_piece(self, x, y):
+         if(x < self.w and y < self.h and self.puzzle_grid[x][y] == 0 and self.puzzle_grid[x][y+1] == 0 and self.puzzle_grid[x][y+2] == 0):
+              return True
+         return False
+
     def proc(self):
           pass
     
-    def move_left(self):
-         
-         if(self.piece.x > 0):
+    def move_left(self):    
+         if(self.piece.x > 0 and self.test_piece(self.piece.x-1, self.piece.y)):
               self.piece.x -= 1
-
-
-
-         pass
     def move_right(self):
-         
-         if(self.piece.x < 7):
+         if(self.piece.x < 7 and self.test_piece(self.piece.x+1, self.piece.y)):
               self.piece.x += 1
 
-         pass
-     
 class Game:
     def __init__(self, window):
           self.renderer = sdl2.ext.Renderer(window)
