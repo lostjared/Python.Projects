@@ -89,7 +89,7 @@ class PuzzleGrid:
          return False
 
     def proc(self):
-          pass
+          self.move_down()
     
     def move_left(self):    
          if(self.piece.x > 0 and self.test_piece(self.piece.x-1, self.piece.y)):
@@ -114,6 +114,8 @@ class Game:
     def __init__(self, window):
           self.renderer = sdl2.ext.Renderer(window)
           self.grid = PuzzleGrid(self.renderer, 8, 17,325, 25)
+          self.speed = 1000
+
     def draw(self):
         rect = sdl2.SDL_Rect(0, 0, 1440, 1080)
         sdl2.SDL_SetRenderDrawColor(self.renderer.sdlrenderer, 0, 0, 0, 255)
@@ -143,11 +145,15 @@ class Game:
     def down(self):
          self.grid.move_down()
 
+    def proc(self):
+         self.grid.proc()
+
 
 def main():
     sdl2.ext.init()
-    window =  sdl2.ext.Window("Puzzle Game [ Python Edition ]", 
-size=(1440, 1080))
+    window =  sdl2.ext.Window("Puzzle Game [ Python Edition ]", size=(1440, 1080))
+    ticks = sdl2.SDL_GetTicks()
+    time_t = 0
     gameobj = Game(window)
     window.show()
     running = True
@@ -161,6 +167,13 @@ size=(1440, 1080))
                 gameobj.event(event)
 
         gameobj.draw()
+        nticks = sdl2.SDL_GetTicks()
+        time_t += nticks-ticks
+        ticks = nticks
+        if(time_t > gameobj.speed):
+             gameobj.proc()
+             time_t = 0
+
         window.refresh()
     return 0
 
