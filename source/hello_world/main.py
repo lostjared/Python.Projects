@@ -1,7 +1,7 @@
 import sys
 
-def main():
-    print("Hello, World!")
+def main(args):
+    print("Hello, World!\n : %s"%(str(args)))
 
 if __name__ == "__main__":
-    sys.exit(main())
+    sys.exit(main(sys.argv))
