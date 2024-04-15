@@ -11,7 +11,6 @@ class PuzzlePiece:
           self.y = 0
           self.mode = 0
 
-
     def reset_piece(self):
           self.blocks = [0, 0, 0]
           while self.blocks[0] == self.blocks[1] and self.blocks[0] == self.blocks[2]:
@@ -70,8 +69,8 @@ class PuzzleGrid:
         
     def draw_piece(self):
         rect1 = sdl2.SDL_Rect(self.off_x+(self.piece.x*(32*3)), self.off_y+(self.piece.y*(16*3)), 32*3, 16*3)
-        rect2 = sdl2.SDL_Rect(self.off_x+(self.piece.x*(32*3)), self.off_y+(self.piece.y+1*(16*3)), 32*3, 16*3)
-        rect3 = sdl2.SDL_Rect(self.off_x+(self.piece.x*(32*3)), self.off_y+(self.piece.y+2*(16*3)), 32*3, 16*3)
+        rect2 = sdl2.SDL_Rect(self.off_x+(self.piece.x*(32*3)), self.off_y+((self.piece.y+1)*(16*3)), 32*3, 16*3)
+        rect3 = sdl2.SDL_Rect(self.off_x+(self.piece.x*(32*3)), self.off_y+((self.piece.y+2)*(16*3)), 32*3, 16*3)
         color1 = self.piece.intToColor(self.piece.blocks[0])
         color2 = self.piece.intToColor(self.piece.blocks[1])
         color3 = self.piece.intToColor(self.piece.blocks[2])
@@ -98,6 +97,18 @@ class PuzzleGrid:
     def move_right(self):
          if(self.piece.x < 7 and self.test_piece(self.piece.x+1, self.piece.y)):
               self.piece.x += 1
+    def move_down(self):
+        if(self.piece.y < 14 and self.test_piece(self.piece.x, self.piece.y+1)):
+              self.piece.y += 1
+        else:
+              self.set()
+
+    def set(self):
+         self.puzzle_grid[self.piece.x][self.piece.y] = self.piece.blocks[0]
+         self.puzzle_grid[self.piece.x][self.piece.y+1] = self.piece.blocks[1]
+         self.puzzle_grid[self.piece.x][self.piece.y+2] = self.piece.blocks[2]
+         self.piece.reset_piece()
+
 
 class Game:
     def __init__(self, window):
@@ -118,6 +129,8 @@ class Game:
                     self.move_right()
                 elif(event.key.keysym.sym == sdl2.SDLK_UP):
                      self.shift()
+                elif(event.key.keysym.sym == sdl2.SDLK_DOWN):
+                     self.down()
                     
     def move_left(self):
         self.grid.move_left()
@@ -127,6 +140,9 @@ class Game:
         pass
     def shift(self):
          self.grid.piece.shift_blocks()
+    def down(self):
+         self.grid.move_down()
+
 
 def main():
     sdl2.ext.init()
