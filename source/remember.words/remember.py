@@ -62,7 +62,7 @@ class Words:
 
 class Game:
     mode = 0
-    cur_time = 1
+    cur_time = 3
     timeout_t = 1000 * cur_time
     def __init__(self, window):
         self.renderer = sdl2.ext.Renderer(window)
@@ -70,6 +70,7 @@ class Game:
 
     def new_game(self):
         self.words = Words("./nouns.txt")
+        self.words.shuffle()
         self.text = "Press Space to Start Game"
         self.word_text = ""
         self.mode = 0
@@ -88,7 +89,7 @@ class Game:
             self.timeout_t = (sdl2.SDL_GetTicks()-self.start_ticks)/1000
             if self.timeout_t > self.cur_time:
                 self.mode = 3
-                self.cur_time -= 1
+                self.cur_time += 1
                 self.input_text = ""
 
             printtext(self.renderer, font, "%d"%(self.timeout_t), (255,255,255), (15,80))
