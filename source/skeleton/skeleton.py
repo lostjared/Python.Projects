@@ -8,6 +8,7 @@ def load_font(font_path, font_size):
     font = sdl2.sdlttf.TTF_OpenFont(font_path.encode('utf-8'), font_size)
     if not font:
         print("Failed to load the font: %s" % sdl2.sdlttf.TTF_GetError())
+        sys.exit(1)
     return font
 
 def create_text_surface(font, text, color):
