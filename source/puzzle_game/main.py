@@ -1,6 +1,5 @@
 # make sure you run in the directory containing font.ttf
 # its the TrueType font file for the games font
-# still working on this prob 80% complete
 import sys
 import sdl2
 import sdl2.ext
