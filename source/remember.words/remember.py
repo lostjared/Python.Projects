@@ -177,4 +177,5 @@ def main(args):
     sdl2.ext.quit()
     return 0
 
-sys.exit(main(sys.argv))
+if __name__ == "__main__":
+    sys.exit(main(sys.argv))
