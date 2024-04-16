@@ -7,6 +7,8 @@ import sdl2.sdlttf
 import random
 import copy
 
+game_over = False
+
 def load_font(font_path, font_size):
     font = sdl2.sdlttf.TTF_OpenFont(font_path.encode('utf-8'), font_size)
     if not font:
@@ -212,10 +214,16 @@ class PuzzleGrid:
               self.set()
 
     def set(self):
-         self.puzzle_grid[self.piece.x][self.piece.y] = self.piece.blocks[0]
-         self.puzzle_grid[self.piece.x][self.piece.y+1] = self.piece.blocks[1]
-         self.puzzle_grid[self.piece.x][self.piece.y+2] = self.piece.blocks[2]
-         self.piece.reset_piece()
+          if self.piece.y == 0:
+               global game_over
+               game_over = True
+               return
+          else:
+               self.puzzle_grid[self.piece.x][self.piece.y] = self.piece.blocks[0]
+               self.puzzle_grid[self.piece.x][self.piece.y+1] = self.piece.blocks[1]
+               self.puzzle_grid[self.piece.x][self.piece.y+2] = self.piece.blocks[2]
+               self.piece.reset_piece()
+
 
 
 class Game:
@@ -224,15 +232,27 @@ class Game:
           self.grid = PuzzleGrid(self.renderer, 8, 17,325, 25)
           self.speed = 1000
 
-    def draw(self, font):
+    def new_game(self):
+          self.grid = PuzzleGrid(self.renderer, 8, 17,325, 25)
+          self.speed = 1000
+          global game_over
+          game_over = False
+
+    def draw(self, font):             
         rect = sdl2.SDL_Rect(0, 0, 1440, 1080)
         sdl2.SDL_SetRenderDrawColor(self.renderer.sdlrenderer, 0, 0, 0, 255)
         self.renderer.clear()
-        self.grid.draw()
-        printtext(self.renderer, font, "Score: %d" % (self.grid.score), (255,255,255), (50, 50))
+        global game_over
+        if game_over == True:
+           printtext(self.renderer, font, "Game Over", (255,255,255), (50, 50))
+           printtext(self.renderer, font, "Press Enter to Start a New Game", (255, 0, 0), (75,150))
+        else:  
+          self.grid.draw()
+          printtext(self.renderer, font, "Score: %d" % (self.grid.score), (255,255,255), (50, 50))
         self.renderer.present()
 
     def event(self, event):
+          global game_over
           if(event.type == sdl2.SDL_KEYDOWN):
                 if(event.key.keysym.sym == sdl2.SDLK_LEFT):
                     self.move_left()
@@ -242,6 +262,9 @@ class Game:
                      self.shift()
                 elif(event.key.keysym.sym == sdl2.SDLK_DOWN):
                      self.down()
+                elif(game_over == True and event.key.keysym.sym == sdl2.SDLK_RETURN):
+                     self.new_game()
+
                     
     def move_left(self):
         self.grid.move_left()
@@ -293,3 +316,4 @@ def main(args):
 
 if __name__ == "__main__":
         sys.exit(main(sys.argv))
+2
