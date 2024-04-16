@@ -1,5 +1,7 @@
 # Puzzle Game [Python Edition]
 
+![puzzleimg](https://github.com/lostjared/Python.Projects/blob/main/screens/pygame.jpg "Python Game")
+
 ## Overview
 This project is a puzzle game implemented in Python using the SDL2 library for graphical rendering. Players control falling puzzle pieces, aiming to align colors to score points and speed up the gameplay. The game features real-time rendering and event handling, providing a challenging and engaging experience.
 
