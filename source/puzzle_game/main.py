@@ -9,6 +9,7 @@ import random
 import copy
 
 game_over = False
+game_speed = 1000
 
 def load_font(font_path, font_size):
     font = sdl2.sdlttf.TTF_OpenFont(font_path.encode('utf-8'), font_size)
@@ -152,11 +153,13 @@ class PuzzleGrid:
               for y in range(0, self.h):
                 color = self.puzzle_grid[x][y]
                 if color >= 1:
+                    global game_speed
                     if self.test_block(x, y+1, color)  and self.test_block(x, y+2, color):
                          self.puzzle_grid[x][y] = -1
                          self.puzzle_grid[x][y+1] = -1
                          self.puzzle_grid[x][y+2] = -1
                          self.score += 1
+                         game_speed -= 25
                          if self.test_block(x, y+3, color):
                               self.puzzle_grid[x][y+3] = -1
                               self.score += 1
@@ -169,6 +172,7 @@ class PuzzleGrid:
                          self.puzzle_grid[x+1][y] = -1
                          self.puzzle_grid[x+2][y] = -1
                          self.score += 1
+                         game_speed -= 25
                          if self.test_block(x+3, y, color):
                               self.puzle_grid[x][y+3] = -1
                               self.score += 1
@@ -180,6 +184,7 @@ class PuzzleGrid:
                          self.puzzle_grid[x+1][y+1] = -1
                          self.puzzle_grid[x+2][y+2] = -1
                          self.score += 1
+                         game_speed -= 25
                          if self.test_block(x+3, y+3, color):
                               self.puzzle_grid[x+3][y+3] = -1
                               self.score += 1
@@ -192,6 +197,7 @@ class PuzzleGrid:
                          self.puzzle_grid[x+1][y-1] = -1
                          self.puzzle_grid[x+2][y-2] = -1
                          self.score += 1
+                         game_speed -= 25
                          if self.test_block(x+3, y-3, color):
                               self.puzzle_grid[x+3][y-3] = -1
                               self.score += 1
@@ -231,11 +237,13 @@ class Game:
     def __init__(self, window):
           self.renderer = sdl2.ext.Renderer(window)
           self.grid = PuzzleGrid(self.renderer, 8, 17,325, 25)
-          self.speed = 1000
+          global game_speed
+          game_speed = 1000
 
     def new_game(self):
           self.grid = PuzzleGrid(self.renderer, 8, 17,325, 25)
-          self.speed = 1000
+          global game_speed
+          game_speed = 1000
           global game_over
           game_over = False
 
@@ -249,7 +257,8 @@ class Game:
            printtext(self.renderer, font, "Press Enter to Start a New Game", (255, 0, 0), (75,150))
         else:  
           self.grid.draw()
-          printtext(self.renderer, font, "Score: %d" % (self.grid.score), (255,255,255), (50, 50))
+          printtext(self.renderer, font, "Score: %d " % (self.grid.score), (255,255,255), (50, 50))
+          printtext(self.renderer, font, "Speed: %d" % (game_speed), (255, 0, 0), (50, 90))
         self.renderer.present()
 
     def event(self, event):
@@ -280,6 +289,7 @@ class Game:
 
 
 def main(args):
+    global game_speed
     sdl2.ext.init()
     if sdl2.sdlttf.TTF_Init() == -1:
          print("TTF_Font: %s" % sdl2.sdlttf.TTF_GetError())
@@ -305,7 +315,7 @@ def main(args):
         nticks = sdl2.SDL_GetTicks()
         time_t += nticks-ticks
         ticks = nticks
-        if(time_t > gameobj.speed):
+        if(time_t > game_speed):
              gameobj.proc()
              time_t = 0
 
