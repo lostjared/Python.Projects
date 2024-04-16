@@ -1,6 +1,9 @@
 
 # Remember Words Recall Game
 
+
+![wordimg](https://github.com/lostjared/Python.Projects/blob/main/screens/remember.jpg "Word Game")
+
 This Python-based game challenges players to recall and type words presented to them in a limited amount of time. Utilizing SDL2 and SDL2_ttf libraries, the game offers a simple graphical interface for an engaging memory test.
 
 ## Prerequisites
