@@ -61,18 +61,53 @@ class Words:
         return self.words[0]
 
 class Game:
+    mode = 0
+    cur_time = 15
+    timeout_t = 1000 * cur_time
     def __init__(self, window):
         self.renderer = sdl2.ext.Renderer(window)
         self.words = Words("./nouns.txt")
         self.text = "Press Space to Start Game"
+        self.word_text = ""
+        self.mode = 0
+        self.timeout_t = 1000 * 15
+        self.input_text = ""
        
     def draw(self, font):
         self.renderer.clear()
-        printtext(self.renderer, font, self.text, (255, 255, 255), (15, 15))
+        if self.mode == 0:
+            printtext(self.renderer, font, self.text, (255, 255, 255), (15, 15))
+        elif self.mode == 1:
+            printtext(self.renderer, font, self.word_text, (255, 0, 0), (15, 15))
+            printtext(self.renderer, font, "Press Enter when ready to start countdown", (255, 255, 255), (15, 80))
+        elif self.mode == 2:
+            self.timeout_t = (sdl2.SDL_GetTicks()-self.start_ticks)/1000
+            if self.timeout_t > self.cur_time:
+                self.mode = 3
+                self.cur_time -= 1
+                self.input_text = ""
+                
+            printtext(self.renderer, font, "%d"%(self.timeout_t), (255,255,255), (15,80))
+        elif self.mode == 3:
+            printtext(self.renderer, font, self.input_text + "_", (255, 255, 255), (15, 15))    
         self.renderer.present()
     
-    def event(self, e):
+    def add_word(self):
+        if len(self.word_text) == 0:
+            self.word_text = self.words.next()
+        else:
+            self.word_text = self.word_text + " " + self.words.next()
+    
+    def timeout(self):
         pass
+
+    def event(self, e):
+        if self.mode == 0 and e.type == sdl2.SDL_KEYDOWN and e.key.keysym.sym == sdl2.SDLK_SPACE:
+            self.add_word()
+            self.mode = 1
+        elif self.mode == 1 and e.type == sdl2.SDL_KEYDOWN and e.key.keysym.sym == sdl2.SDLK_RETURN:
+            self.start_ticks = sdl2.SDL_GetTicks()
+            self.mode = 2
 
     def proc(event):
         pass
@@ -103,6 +138,7 @@ def main(args):
                 gameobj.event(event)
 
         gameobj.draw(font)
+        gameobj.timeout();
         nticks = sdl2.SDL_GetTicks()
         time_t += nticks-ticks
         ticks = nticks
