@@ -62,16 +62,20 @@ class Words:
 
 class Game:
     mode = 0
-    cur_time = 15
+    cur_time = 1
     timeout_t = 1000 * cur_time
     def __init__(self, window):
         self.renderer = sdl2.ext.Renderer(window)
+        self.new_game()
+
+    def new_game(self):
         self.words = Words("./nouns.txt")
         self.text = "Press Space to Start Game"
         self.word_text = ""
         self.mode = 0
         self.timeout_t = 1000 * 15
         self.input_text = ""
+
        
     def draw(self, font):
         self.renderer.clear()
@@ -86,10 +90,14 @@ class Game:
                 self.mode = 3
                 self.cur_time -= 1
                 self.input_text = ""
-                
+
             printtext(self.renderer, font, "%d"%(self.timeout_t), (255,255,255), (15,80))
         elif self.mode == 3:
-            printtext(self.renderer, font, self.input_text + "_", (255, 255, 255), (15, 15))    
+            printtext(self.renderer, font, self.input_text + "_", (255, 255, 255), (15, 15))  
+        elif self.mode == 4:
+            printtext(self.renderer, font, "Correct! Press Space to Continue", (255,255,255), (15, 15))
+        elif self.mode == 5:
+            printtext(self.renderer, font, "Incorrect Game Over", (0,0,255),  (15,15))  
         self.renderer.present()
     
     def add_word(self):
@@ -101,13 +109,28 @@ class Game:
     def timeout(self):
         pass
 
+    def check_input(self):
+        if self.input_text == self.word_text:
+            self.mode = 4
+        else:
+            self.mode = 5
+
     def event(self, e):
-        if self.mode == 0 and e.type == sdl2.SDL_KEYDOWN and e.key.keysym.sym == sdl2.SDLK_SPACE:
+        if self.mode == 0 or self.mode == 4 and e.type == sdl2.SDL_KEYDOWN and e.key.keysym.sym == sdl2.SDLK_SPACE:
             self.add_word()
             self.mode = 1
         elif self.mode == 1 and e.type == sdl2.SDL_KEYDOWN and e.key.keysym.sym == sdl2.SDLK_RETURN:
             self.start_ticks = sdl2.SDL_GetTicks()
             self.mode = 2
+        elif self.mode == 3 and e.type == sdl2.SDL_KEYDOWN and e.key.keysym.sym == sdl2.SDLK_BACKSPACE and len(self.input_text) >= 1:
+            self.input_text = self.input_text[0:len(self.input_text)-1]
+        elif self.mode == 3 and e.type == sdl2.SDL_KEYDOWN and e.key.keysym.sym == sdl2.SDLK_RETURN and len(self.input_text) >= 1:
+            self.check_input()
+        elif self.mode == 3 and e.type == sdl2.SDL_KEYDOWN:
+            self.input_text = self.input_text + chr(e.key.keysym.sym)
+        elif self.mode == 5 and e.type == sdl2.SDL_KEYDOWN and e.key.keysym.sym == sdl2.SDLK_RETURN:
+            self.new_game()
+        
 
     def proc(event):
         pass
