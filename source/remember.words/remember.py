@@ -147,7 +147,7 @@ def main(args):
          return 1
     font = load_font("font.ttf", 24)
 
-    window =  sdl2.ext.Window("Puzzle Game [ Python Edition ]", size=(1920, 1080))
+    window =  sdl2.ext.Window("Remember Words [ Python Edition ]", size=(1920, 1080))
     ticks = sdl2.SDL_GetTicks()
     time_t = 0
     gameobj = Game(window)
