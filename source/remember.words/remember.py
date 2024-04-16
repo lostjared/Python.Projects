@@ -1,4 +1,5 @@
-# in progress
+# remember words
+# word recall game
 
 import sys
 import sdl2
