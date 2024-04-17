@@ -77,6 +77,7 @@ class Game:
         self.mode = 0
         self.timeout_t = 1000 * 15
         self.input_text = ""
+        self.cur_time = 3
 
        
     def draw(self, font):
