@@ -11,8 +11,8 @@ class Line:
         self.data = list()
         self.release()
     def release(self):
-        for i in range(0, int(1080/4)):
-            self.data.append([random.randint(97, 123), i*12])
+        for i in range(0, int(1080/24)+3):
+            self.data.append([random.randint(97, 123), i*24])
     def __len__(self):
         return len(self.data)
     def __getitem__(self, index):
@@ -21,10 +21,12 @@ class Line:
 
 class Game:
     chz = list()
+    dir = 0
     def __init__(self, window):
         self.renderer = sdl2.ext.Renderer(window)
         for _ in range(0, int(1440/24)):
             self.chz.append(Line())
+        self.dir = 0
     
     def build_character_list(self, font, color):
         self.chars = dict()
@@ -40,7 +42,6 @@ class Game:
 
     def draw(self, font):
         self.renderer.clear()
-#E        self.printtext(self.renderer, font, self.text, (255, 255, 255), (15, 15))
         start_x = 0
         while start_x < int(1440/24):
             l = self.chz[start_x]
@@ -54,13 +55,23 @@ class Game:
         self.renderer.present()
     
     def event(self, e):
-        pass  
+        if e.type == sdl2.SDL_KEYDOWN and e.key.keysym.sym == sdl2.SDLK_UP:
+            self.dir = 0
+        if e.type == sdl2.SDL_KEYDOWN and e.key.keysym.sym == sdl2.SDLK_DOWN:
+            self.dir = 1
+
     def proc(self):
         for i in self.chz:
             for z in i.data:
-                z[1] -= random.randint(1, 5)
+                if self.dir == 0:
+                    z[1] += random.randint(1, 5)
+                else:
+                    z[1] -= random.randint(1, 5)
+
                 if z[1] < -32:
                     z[1] = 1080+32
+                if z[1] > 1080+32:
+                    z[1] = -32
 
            
 
