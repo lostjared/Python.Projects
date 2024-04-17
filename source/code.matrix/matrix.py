@@ -1,4 +1,4 @@
-# game skeleton
+# matrix
 
 import sys
 import sdl2
