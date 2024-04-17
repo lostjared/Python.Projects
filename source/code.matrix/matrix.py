@@ -34,10 +34,12 @@ class Game:
             surf = self.create_text_surface(font, "%c" %(i), color)
             text = self.create_texture_from_surface(self.renderer, surf)
             self.chars[i] = (text, surf.contents.w, surf.contents.h)
+            sdl2.SDL_FreeSurface(surf)
         for i in range(65, 91):
             surf = self.create_text_surface(font, "%c" %(i), color)
             text = self.create_texture_from_surface(self.renderer, surf)
             self.chars[i] = (text,surf.contents.w, surf.contents.h)
+            sdl2.SDL_FreeSurface(surf)
 
 
     def draw(self, font):
@@ -73,7 +75,9 @@ class Game:
                 if z[1] > 1080+32:
                     z[1] = -32
 
-           
+    def clean(self):
+        for key in self.chars:
+            sdl2.SDL_DestroyTexture(self.chars[key][0])   
 
     def load_font(self, font_path, font_size):
         font = sdl2.sdlttf.TTF_OpenFont(font_path.encode('utf-8'), font_size)
@@ -140,6 +144,8 @@ class XObject:
                 time_t = 0
             window.refresh()
     
+
+        self.gameobj.clean()
         sdl2.sdlttf.TTF_CloseFont(self.font)
         sdl2.sdlttf.TTF_Quit()
         sdl2.ext.quit()
