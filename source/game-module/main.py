@@ -6,7 +6,7 @@ import sdl2.ext;
 
 class Game(skeleton.GameInternal):
     def __init__(self):
-                self.text = "Hello, World! Press a Key"
+        self.text = "Hello, World! Press a Key"
     def set_window(self, window):
         self.renderer = sdl2.ext.Renderer(window)
     
