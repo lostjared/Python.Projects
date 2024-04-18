@@ -3,7 +3,9 @@ import sys
 def func_nested(x):
     def test():
         return x*x
+    
     return test
+
 def func_call(x):
     return x()
 
@@ -12,6 +14,5 @@ def main(args):
     print(x())
     print(func_call(x))
 
-
-
-sys.exit(main(sys.argv))
+if __name__ == "__main__":
+    sys.exit(main(sys.argv))
