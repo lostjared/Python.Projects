@@ -16,6 +16,12 @@ class Paddle:
         color = (255,255,255)
         sdl2.SDL_SetRenderDrawColor(renderer.sdlrenderer, color[0], color[1], color[2], 255)
         sdl2.SDL_RenderFillRect(renderer.sdlrenderer, rect)
+    def move_left(self):
+        if self.x > 10:
+            self.x -= 10
+    def move_right(self):
+        if self.x+self.width < 1440-10:
+            self.x += 10
      
 
 class Grid:

@@ -29,7 +29,7 @@ class GameInternal:
     def printtext(self, rend, font, text, color, dst):
         surf = self.create_text_surface(font, text, color)
         text = self.create_texture_from_surface(rend, surf)
-        rect = sdl2.SDL_Rect(dst[0], dst[1], surf.contents.w, surf.contents.h)
+        rect = sdl2.SDL_Rect(int(dst[0]), int(dst[1]), int(surf.contents.w), int(surf.contents.h))
         sdl2.SDL_RenderCopy(rend.sdlrenderer, text, None, rect)
         sdl2.SDL_DestroyTexture(text)
         sdl2.SDL_FreeSurface(surf)
@@ -67,8 +67,9 @@ class XObject:
             nticks = sdl2.SDL_GetTicks()
             time_t += nticks-ticks
             ticks = nticks
+            self.gameobj.proc()
             if(time_t > 1000):
-                self.gameobj.proc()
+                self.gameobj.tproc()
                 time_t = 0
             window.refresh()
     
