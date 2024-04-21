@@ -67,8 +67,8 @@ class XObject:
             nticks = sdl2.SDL_GetTicks()
             time_t += nticks-ticks
             ticks = nticks
-            self.gameobj.proc()
             if(time_t > 10):
+                self.gameobj.proc()
                 self.gameobj.tproc()
                 time_t = 0
             window.refresh()
