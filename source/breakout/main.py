@@ -7,6 +7,8 @@ import breakout
 
 class Game(skeleton.GameInternal):
     def __init__(self):
+        self.setup()
+    def setup(self):
         self.grid = breakout.Grid(breakout.grid_width, breakout.grid_height)
         self.paddle = breakout.Paddle()
         self.ball = breakout.Ball()
@@ -14,6 +16,8 @@ class Game(skeleton.GameInternal):
         self.keys = dict()
         self.keys[sdl2.SDLK_LEFT] = 0
         self.keys[sdl2.SDLK_RIGHT] = 0
+        self.mode = 0
+        self.end_score = 0
 
     def set_window(self, window):
         self.renderer = sdl2.ext.Renderer(window)
@@ -21,26 +25,40 @@ class Game(skeleton.GameInternal):
     def draw(self, font):
         sdl2.SDL_SetRenderDrawColor(self.renderer.sdlrenderer, 0, 0, 0, 255)
         self.renderer.clear()
-        self.grid.draw(self.renderer)
-        self.paddle.draw(self.renderer)
-        self.ball.draw(self.renderer)
-        self.printtext(self.renderer, font, "Score: %d" %(self.score), (255, 255, 255), (15, 275))
+        if self.mode == 0:
+            self.grid.draw(self.renderer)
+            self.paddle.draw(self.renderer)
+            self.ball.draw(self.renderer)
+            self.printtext(self.renderer, font, "Score: %d Lives: %d" %(self.ball.score, self.ball.lives), (255, 255, 255), (15, 275))
+        elif self.mode == 1:
+            self.printtext(self.renderer, font, "Game Over - [ Score: %d ] Press Return" % (self.end_score), (255, 255, 255), (100, 100))
         self.renderer.present()
     
     def event(self, e):
         if e.type == sdl2.SDL_KEYDOWN:
             self.keys[e.key.keysym.sym] = 1
+            if self.mode == 1 and e.key.keysym.sym == sdl2.SDLK_RETURN:
+                self.setup()
         elif e.type == sdl2.SDL_KEYUP:
             self.keys[e.key.keysym.sym] = 0
     
     def proc(self):
-        if  self.keys[sdl2.SDLK_LEFT] == 1:
-            self.paddle.move_left()
-        elif self.keys[sdl2.SDLK_RIGHT] == 1:
-            self.paddle.move_right()
-    def tproc(self):
-        self.ball.update(self.paddle, self.grid)
+        if self.mode == 0:
+            if  self.keys[sdl2.SDLK_LEFT] == 1:
+                self.paddle.move_left()
+            elif self.keys[sdl2.SDLK_RIGHT] == 1:
+                self.paddle.move_right()
 
+    def tproc(self):
+        if self.mode == 0:
+            self.ball.update(self.paddle, self.grid)
+            if self.ball.lives <= 0:
+               self.end_score = self.ball.score
+               self.mode = 1
+            else:
+                if self.grid.is_empty():
+                    self.grid.reset()
+            
 if __name__ == "__main__":
-    object = skeleton.XObject("Skeleton", (1440, 1080))
+    object = skeleton.XObject("Breakout", (1440, 1080))
     sys.exit(object.main(sys.argv, Game()))
