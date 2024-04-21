@@ -36,17 +36,15 @@ class Game(skeleton.GameInternal):
     
     def event(self, e):
         if e.type == sdl2.SDL_KEYDOWN:
-            self.keys[e.key.keysym.sym] = 1
             if self.mode == 1 and e.key.keysym.sym == sdl2.SDLK_RETURN:
                 self.setup()
-        elif e.type == sdl2.SDL_KEYUP:
-            self.keys[e.key.keysym.sym] = 0
-    
+        
     def proc(self):
         if self.mode == 0:
-            if  self.keys[sdl2.SDLK_LEFT] == 1:
+              key_states = sdl2.SDL_GetKeyboardState(None)
+              if key_states[sdl2.SDL_SCANCODE_LEFT]:
                 self.paddle.move_left()
-            elif self.keys[sdl2.SDLK_RIGHT] == 1:
+              if key_states[sdl2.SDL_SCANCODE_RIGHT]:
                 self.paddle.move_right()
 
     def tproc(self):
