@@ -39,8 +39,7 @@ class Game(skeleton.GameInternal):
         elif self.keys[sdl2.SDLK_RIGHT] == 1:
             self.paddle.move_right()
     def tproc(self):
-        print("HERE")
-        self.ball.proc(self.grid)
+        self.ball.update(self.paddle, self.grid)
 
 if __name__ == "__main__":
     object = skeleton.XObject("Skeleton", (1440, 1080))

@@ -1,3 +1,5 @@
+# in progress
+
 import sdl2;
 import sdl2.ext;
 import random
@@ -54,24 +56,46 @@ class Grid:
                 sdl2.SDL_SetRenderDrawColor(renderer.sdlrenderer, color[0], color[1], color[2], 255)
                 sdl2.SDL_RenderFillRect(renderer.sdlrenderer, rect)
      
+
 class Ball:
     def __init__(self):
         self.reset()
 
     def reset(self):
-        self.x = int(1440/2)
-        self.y = int(1080/2)
-        self.dir = random.randint(0, 5)
-        self.speed = 5
+        self.x = 1440 // 2
+        self.y = 1080 // 2 - 50  
+        self.vx = random.choice([-5, 5])  
+        self.vy = -5  
 
     def draw(self, renderer):
-        rect = sdl2.SDL_Rect(self.x, self.y, 16, 16)
-        color = (255,255,255)
+        rect = sdl2.SDL_Rect(int(self.x), int(self.y), 16, 16)
+        color = (255, 255, 255)
         sdl2.SDL_SetRenderDrawColor(renderer.sdlrenderer, color[0], color[1], color[2], 255)
         sdl2.SDL_RenderFillRect(renderer.sdlrenderer, rect)
 
-    def proc(self, grid):
-        if self.dir == 0:
-            self.y += self.speed
-            if self.y > 1080:
-                self.reset()
+    def update(self, paddle, grid):
+        self.x += self.vx
+        self.y += self.vy
+
+        if self.x <= 0 or self.x >= 1440 - 16:
+            self.vx = -self.vx
+
+        if self.y <= 0:
+            self.vy = -self.vy
+
+        if (self.x + 16 >= paddle.x and self.x <= paddle.x + paddle.width) and (self.y + 16 >= paddle.y):
+            self.vy = -self.vy  
+
+        for x in range(grid.cols):
+            for y in range(grid.rows):
+                brick = grid.grid[x][y]
+                if brick > 0:
+                    brick_x = x * 32
+                    brick_y = y * 16
+                    if (self.x + 16 > brick_x and self.x < brick_x + 32) and (self.y + 16 > brick_y and self.y < brick_y + 16):
+                        self.vy = -self.vy  
+                        grid.grid[x][y] = 0  
+                        
+        if self.y > 1080:
+            self.reset()
+
