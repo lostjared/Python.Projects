@@ -21,23 +21,7 @@ class Paddle:
             self.x -= 10
     def move_right(self):
         if self.x+self.width < 1440-10:
-            self.x += 10
-
-class Ball:
-    def __init__(self):
-        self.reset()
-
-    def reset(self):
-        self.x = 1440/2
-        self.y = 1080/2
-        self.dir = random.randint(0, 5)
-
-    def draw(self, renderer):
-        rect = sdl2.SDL_Rect(self.x, self.y, 16, 16)
-        color = (255,255,255)
-        sdl2.SDL_SetRenderDrawColor(renderer.sdlrenderer, color[0], color[1], color[2], 255)
-        sdl2.SDL_RenderFillRect(renderer.sdlrenderer, rect)
-        
+            self.x += 10     
 
 class Grid:
     def __init__(self, width, height):
@@ -62,8 +46,7 @@ class Grid:
         else:
             return (255, 0, 255)
 
-    def draw(self, renderer):
-        
+    def draw(self, renderer): 
         for x in range(self.cols):
             for y in range(self.rows):
                 rect = sdl2.SDL_Rect(x*32, y*16, 32, 16)
@@ -71,6 +54,24 @@ class Grid:
                 sdl2.SDL_SetRenderDrawColor(renderer.sdlrenderer, color[0], color[1], color[2], 255)
                 sdl2.SDL_RenderFillRect(renderer.sdlrenderer, rect)
      
+class Ball:
+    def __init__(self):
+        self.reset()
 
+    def reset(self):
+        self.x = int(1440/2)
+        self.y = int(1080/2)
+        self.dir = random.randint(0, 5)
+        self.speed = 5
 
-        
+    def draw(self, renderer):
+        rect = sdl2.SDL_Rect(self.x, self.y, 16, 16)
+        color = (255,255,255)
+        sdl2.SDL_SetRenderDrawColor(renderer.sdlrenderer, color[0], color[1], color[2], 255)
+        sdl2.SDL_RenderFillRect(renderer.sdlrenderer, rect)
+
+    def proc(self, grid):
+        if self.dir == 0:
+            self.y += self.speed
+            if self.y > 1080:
+                self.reset()

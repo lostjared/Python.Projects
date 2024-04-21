@@ -23,7 +23,7 @@ class Game(skeleton.GameInternal):
         self.renderer.clear()
         self.grid.draw(self.renderer)
         self.paddle.draw(self.renderer)
-        self.ball.drwa(self.renderer)
+        self.ball.draw(self.renderer)
         self.printtext(self.renderer, font, "Score: %d" %(self.score), (255, 255, 255), (15, 275))
         self.renderer.present()
     
@@ -39,8 +39,8 @@ class Game(skeleton.GameInternal):
         elif self.keys[sdl2.SDLK_RIGHT] == 1:
             self.paddle.move_right()
     def tproc(self):
-        pass
-
+        print("HERE")
+        self.ball.proc(self.grid)
 
 if __name__ == "__main__":
     object = skeleton.XObject("Skeleton", (1440, 1080))
