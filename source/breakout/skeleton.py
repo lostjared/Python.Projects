@@ -68,8 +68,8 @@ class XObject:
             time_t += nticks-ticks
             ticks = nticks
             if(time_t > 10):
-                self.gameobj.proc()
                 self.gameobj.tproc()
+                self.gameobj.proc()
                 time_t = 0
             window.refresh()
     
