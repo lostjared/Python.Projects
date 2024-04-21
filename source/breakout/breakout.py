@@ -95,6 +95,11 @@ class Ball:
         if self.y <= 0:
             self.vy = -self.vy
 
+        if self.y > paddle.y + 25:
+            if self.y > 1080:
+                self.reset()
+            return  
+
         if (self.x + 16 >= paddle.x and self.x <= paddle.x + paddle.width) and (self.y + 16 >= paddle.y):
             self.vy = -self.vy  
 
