@@ -22,7 +22,22 @@ class Paddle:
     def move_right(self):
         if self.x+self.width < 1440-10:
             self.x += 10
-     
+
+class Ball:
+    def __init__(self):
+        self.reset()
+
+    def reset(self):
+        self.x = 1440/2
+        self.y = 1080/2
+        self.dir = random.randint(0, 5)
+
+    def draw(self, renderer):
+        rect = sdl2.SDL_Rect(self.x, self.y, 16, 16)
+        color = (255,255,255)
+        sdl2.SDL_SetRenderDrawColor(renderer.sdlrenderer, color[0], color[1], color[2], 255)
+        sdl2.SDL_RenderFillRect(renderer.sdlrenderer, rect)
+        
 
 class Grid:
     def __init__(self, width, height):

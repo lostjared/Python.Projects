@@ -9,6 +9,7 @@ class Game(skeleton.GameInternal):
     def __init__(self):
         self.grid = breakout.Grid(breakout.grid_width, breakout.grid_height)
         self.paddle = breakout.Paddle()
+        self.ball = breakout.Ball()
         self.score = 0
         self.keys = dict()
         self.keys[sdl2.SDLK_LEFT] = 0
@@ -22,6 +23,7 @@ class Game(skeleton.GameInternal):
         self.renderer.clear()
         self.grid.draw(self.renderer)
         self.paddle.draw(self.renderer)
+        self.ball.drwa(self.renderer)
         self.printtext(self.renderer, font, "Score: %d" %(self.score), (255, 255, 255), (15, 275))
         self.renderer.present()
     
