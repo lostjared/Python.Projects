@@ -4,7 +4,6 @@ import token
 class Scanner:
     def __init__(self, input):
         self.input = input
-        self.tokens = []  # List to store all tokens for debugging/output
         self.token = None
         self.index = 0
         self.input_len = len(input)
@@ -48,10 +47,8 @@ class Scanner:
             self.index += 1  
         if self.index >= self.input_len:
             return None
-        self.token = token.Token()  
+        self.token = token.Token("", "")  
         self.grab_next()
-        if self.token.text: 
-            self.tokens.append(self.token)
         return self.token
 
     def grab_next(self):
