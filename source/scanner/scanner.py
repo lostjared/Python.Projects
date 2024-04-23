@@ -97,6 +97,9 @@ class Scanner:
 
             if temp_op in self.multi_char:
                 self.token.add(self.getchar())
+                temp_op += self.peekchar()
+                if temp_op in self.multi_char:
+                    self.token.add(self.getchar())
 
 
     def char_to_type(self, ch):

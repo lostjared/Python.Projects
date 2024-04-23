@@ -1,7 +1,9 @@
 void main(void) {
 
 color = vec4(0, 0, 0);
-float value_1 = 10;
+int value_1 = 10;
+
+value_1 >>= 3;
 
 }
 
