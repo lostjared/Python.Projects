@@ -28,7 +28,7 @@ class Scanner:
         self.multi_char = (
              '->', '++', '--', '<<', '>>', '&&', '||', '==', '!=', '<=', '>=', '+=', '-=', '*=', '/=', '%=', '&=', '|=', '^=', '<<=', '>>=', '->*', '::', '.*'
         )
-        # Handle whitespace and similar characters
+        self.ch_map[ord('_')] = 1
         self.ch_map[ord(' ')] = 0
         self.ch_map[ord('\t')] = 0
         self.ch_map[ord('\n')] = 0
