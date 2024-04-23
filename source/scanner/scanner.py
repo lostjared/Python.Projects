@@ -76,7 +76,7 @@ class Scanner:
     def grab_id(self):
         while True:
             ch = self.peekchar()
-            if ch is None or self.char_to_type(ch) != 1:
+            if ch is None or self.char_to_type(ch) != 1 and self.char_to_type(ch) != 2:
                 break
             self.token.add(self.getchar())
         self.token.set_type('IDENTIFIER')
