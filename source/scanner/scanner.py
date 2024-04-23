@@ -19,11 +19,15 @@ class Scanner:
         cpp_operators = [
             '+', '-', '*', '/', '%', '^', '&', '|', '~', '!', '=', '<', '>', '+=',
             '-=', '*=', '/=', '%=', '^=', '&=', '|=', '<<', '>>', '>>=', '<<=',
-            '==', '!=', '<=', '>=', '&&', '||', '++', '--', ',', '->*', '->', '()', '[]', '{}'
+            '==', '!=', '<=', '>=', '&&', '||', '++', '--', ',', '->*', '->', '()', '[]', '{}', '.', ';', ':'
         ]
         for op in cpp_operators:
             for c in op:
                 self.ch_map[c] = 3
+
+        self.multi_char = (
+             '->', '++', '--', '<<', '>>', '&&', '||', '==', '!=', '<=', '>=', '+=', '-=', '*=', '/=', '%=', '&=', '|=', '^=', '<<=', '>>=', '->*', '::', '.*'
+        )
         # Handle whitespace and similar characters
         self.ch_map[ord(' ')] = 0
         self.ch_map[ord('\t')] = 0
@@ -66,7 +70,9 @@ class Scanner:
         elif type == 3:
             self.token.set_type('OPERATOR')
             self.token.add(ch)
-
+            if self.char_to_type(self.peekchar()) == 3:
+                self.grab_symbol()
+        
     def grab_id(self):
         while True:
             ch = self.peekchar()
@@ -82,6 +88,16 @@ class Scanner:
                 break
             self.token.add(self.getchar())
         self.token.set_type('NUMBER')
+
+    def grab_symbol(self):
+        ch = self.peekchar()
+        if self.char_to_type(ch) == 3:
+            temp_op = self.token.text
+            temp_op += ch
+
+            if temp_op in self.multi_char:
+                self.token.add(self.getchar())
+
 
     def char_to_type(self, ch):
         if ch:
