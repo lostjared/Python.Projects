@@ -28,12 +28,19 @@ class Scanner:
         self.multi_char = (
              '->', '++', '--', '<<', '>>', '&&', '||', '==', '!=', '<=', '>=', '+=', '-=', '*=', '/=', '%=', '&=', '|=', '^=', '<<=', '>>=', '->*', '::', '.*'
         )
-        self.ch_map[ord('_')] = 1
         self.ch_map[ord(' ')] = 0
         self.ch_map[ord('\t')] = 0
         self.ch_map[ord('\n')] = 0
         self.ch_map[ord('\r')] = 0
+        self.ch_map[ ord('_') ] = 1
+       
 
+
+
+    def error(s):
+        print(s)
+        raise Exception
+    
     def getchar(self):
         if self.index < self.input_len:
             ch = self.input[self.index]
@@ -76,14 +83,21 @@ class Scanner:
     def grab_id(self):
         while True:
             ch = self.peekchar()
-            if ch is None or self.char_to_type(ch) != 1 and self.char_to_type(ch) != 2:
+            if ch is None or (self.char_to_type(ch) != 1 and self.char_to_type(ch) != 2 and ch != '_'):
                 break
             self.token.add(self.getchar())
         self.token.set_type('IDENTIFIER')
 
     def grab_digit(self):
+        count = 0
         while True:
             ch = self.peekchar()
+            if ch == '.' and count > 0:
+                self.error("Error multiple decimal points")
+            if ch == '.' and count == 0:
+                self.token.add(self.getchar())
+                count += 1
+                continue
             if ch is None or self.char_to_type(ch) != 2:
                 break
             self.token.add(self.getchar())

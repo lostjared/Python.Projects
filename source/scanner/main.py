@@ -7,9 +7,14 @@ def scan(file):
     with open(file) as fp:
         scan = scanner.Scanner(fp.read())
         tokens = list()
-        while scan.next():
-            tokens.append(token.Token(scan.token.text, scan.token.type))
-            scan.token.clear()
+        try: 
+            while scan.next():
+                tokens.append(token.Token(scan.token.text, scan.token.type))
+                scan.token.clear()
+        except Exception:
+            print ("Scanner: Syntax Error")
+            sys.exit(1)
+
         return tokens
 
 def main(args):
