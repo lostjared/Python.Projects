@@ -1,9 +1,5 @@
-void main(void) {
 
-color = vec4(0.0, 0.5, 1.0);
-int value_1 = 10;
-
-value_1 >>= 3;
-
+int main(int argc, char **argv) {
+int value_1 = add(10, 10);
+return 0;
 }
-
