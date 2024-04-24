@@ -154,4 +154,3 @@ class XObject:
 if __name__ == "__main__":
     object = XObject("Matrix", (1440, 1080))
     sys.exit(object.main(sys.argv))
-
