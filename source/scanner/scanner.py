@@ -81,6 +81,9 @@ class Scanner:
         elif type == 4:
             self.token.set_type('STRING')
             self.grab_string()
+        elif type == 5:
+            self.token.set_type('SINGLE QUOTE STRING')
+            self.grab_single()
         
     def grab_id(self):
         while True:
@@ -129,6 +132,21 @@ class Scanner:
                 return
             else:
                 self.token.add(self.getchar())
+
+    def grab_single(self):
+        while True:
+            ch = self.peekchar()
+            if ch == None:
+                break
+            if ch == '\\':
+                self.token.add(self.getchar())
+                self.token.add(self.getchar())
+            elif self.char_to_type(ch) == 5:
+                ch = self.getchar()                
+                return
+            else:
+                self.token.add(self.getchar())
+                
 
     def char_to_type(self, ch):
         if ch:
