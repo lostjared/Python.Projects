@@ -118,13 +118,10 @@ class XObject:
         self.size = size
     
     def main(self, args):
-
         if len(args) == 4:
             color = (int(args[1]), int(args[2]), int(args[3]))
         else:
             color = (0, 255, 0)
-                    
-
         sdl2.ext.init()
         if sdl2.sdlttf.TTF_Init() == -1:
             print("TTF_Font: %s" % sdl2.sdlttf.TTF_GetError())
