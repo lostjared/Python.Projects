@@ -12,7 +12,7 @@ class Token:
         self.text += ch
 
     def print(self):
-        print(self.text + " -> [ " + self.type + "]")
+        print(self.text + " -> [" + self.type + "]")
 
     def clear(self):
         self.text = ""

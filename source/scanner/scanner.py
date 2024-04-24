@@ -28,14 +28,13 @@ class Scanner:
         self.multi_char = (
              '->', '++', '--', '<<', '>>', '&&', '||', '==', '!=', '<=', '>=', '+=', '-=', '*=', '/=', '%=', '&=', '|=', '^=', '<<=', '>>=', '->*', '::', '.*', '**', '***'
         )
-        self.ch_map[ord(' ')] = 0
-        self.ch_map[ord('\t')] = 0
-        self.ch_map[ord('\n')] = 0
-        self.ch_map[ord('\r')] = 0
-        self.ch_map[ ord('_') ] = 1
-       
-
-
+        self.ch_map[' '] = 0
+        self.ch_map['\t'] = 0
+        self.ch_map['\n'] = 0
+        self.ch_map['\r'] = 0
+        self.ch_map['_'] = 1
+        self.ch_map["\""] = 4
+        self.ch_map['\''] = 5
 
     def error(s):
         print(s)
@@ -67,6 +66,7 @@ class Scanner:
         if ch is None:
             return None
         type = self.char_to_type(ch)
+        print("type: %d "%(type))
         if type == 1:
             self.token.add(ch)
             self.grab_id()
@@ -78,6 +78,9 @@ class Scanner:
             self.token.add(ch)
             if self.char_to_type(self.peekchar()) == 3:
                 self.grab_symbol()
+        elif type == 4:
+            self.token.set_type('STRING')
+            self.grab_string()
         
     def grab_id(self):
         while True:
@@ -107,13 +110,25 @@ class Scanner:
         if self.char_to_type(ch) == 3:
             temp_op = self.token.text
             temp_op += ch
-
             if temp_op in self.multi_char:
                 self.token.add(self.getchar())
                 temp_op += self.peekchar()
                 if temp_op in self.multi_char:
                     self.token.add(self.getchar())
 
+    def grab_string(self):
+        while True:
+            ch = self.peekchar()
+            if ch == None:
+                break
+            if ch == '\\':
+                self.token.add(self.getchar())
+                self.token.add(self.getchar())
+            elif self.char_to_type(ch) ==  4:
+                ch = self.getchar()                
+                return
+            else:
+                self.token.add(self.getchar())
 
     def char_to_type(self, ch):
         if ch:
