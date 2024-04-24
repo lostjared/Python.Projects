@@ -1,4 +1,9 @@
 # matrix
+# python3 matrix.py 
+# set color:
+# python3 matrix.py R G B
+# fo red:
+# python3 matrix.py 255 0 0
 
 import sys
 import sdl2
@@ -113,6 +118,13 @@ class XObject:
         self.size = size
     
     def main(self, args):
+
+        if len(args) == 4:
+            color = (int(args[1]), int(args[2]), int(args[3]))
+        else:
+            color = (0, 255, 0)
+                    
+
         sdl2.ext.init()
         if sdl2.sdlttf.TTF_Init() == -1:
             print("TTF_Font: %s" % sdl2.sdlttf.TTF_GetError())
@@ -123,7 +135,7 @@ class XObject:
         time_t = 0
         self.gameobj = Game(window)
         self.font = self.gameobj.load_font("font.ttf", 24)
-        self.gameobj.build_character_list(self.font, (0,255,0))
+        self.gameobj.build_character_list(self.font, color)
         window.show()
         running = True
         while running:
