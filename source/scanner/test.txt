@@ -3,6 +3,5 @@ int main(int argc, char **argv) {
 	printf("Hello,\" \\ World!");
 	char c = 'x';
 	printf("value is %c", c);
-
 	return 0;
 }

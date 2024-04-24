@@ -74,15 +74,15 @@ class Scanner:
             self.token.add(ch)
             self.grab_digit()
         elif type == 3:
-            self.token.set_type('OPERATOR')
+            self.token.set_type(3)
             self.token.add(ch)
             if self.char_to_type(self.peekchar()) == 3:
                 self.grab_symbol()
         elif type == 4:
-            self.token.set_type('STRING')
+            self.token.set_type(4)
             self.grab_string()
         elif type == 5:
-            self.token.set_type('SINGLE QUOTE STRING')
+            self.token.set_type(5)
             self.grab_single()
         
     def grab_id(self):
@@ -91,7 +91,7 @@ class Scanner:
             if ch is None or (self.char_to_type(ch) != 1 and self.char_to_type(ch) != 2 and ch != '_'):
                 break
             self.token.add(self.getchar())
-        self.token.set_type('IDENTIFIER')
+        self.token.set_type(1)
 
     def grab_digit(self):
         count = 0
@@ -106,7 +106,7 @@ class Scanner:
             if ch is None or self.char_to_type(ch) != 2:
                 break
             self.token.add(self.getchar())
-        self.token.set_type('NUMBER')
+        self.token.set_type(2)
 
     def grab_symbol(self):
         ch = self.peekchar()
