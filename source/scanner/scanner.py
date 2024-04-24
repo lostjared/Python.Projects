@@ -1,6 +1,5 @@
 
 import token
-import sys
 
 class Scanner:
     def __init__(self, input):
