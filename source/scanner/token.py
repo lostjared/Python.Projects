@@ -1,9 +1,6 @@
 
 
 class Token:
-    def __init__(self):
-        self.type = ""
-        self.text = ""
     def __init__(self, text, type):
         self.type = type
         self.text = text
