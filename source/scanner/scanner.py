@@ -1,5 +1,6 @@
 
 import token
+import sys
 
 class Scanner:
     def __init__(self, input):
@@ -36,8 +37,8 @@ class Scanner:
         self.ch_map["\""] = 4
         self.ch_map['\''] = 5
 
-    def error(s):
-        print(s)
+    def error(self, s):
+        print("Error: " + s)
         raise Exception
     
     def getchar(self):
@@ -66,7 +67,6 @@ class Scanner:
         if ch is None:
             return None
         type = self.char_to_type(ch)
-        print("type: %d "%(type))
         if type == 1:
             self.token.add(ch)
             self.grab_id()
@@ -122,7 +122,8 @@ class Scanner:
     def grab_string(self):
         while True:
             ch = self.peekchar()
-            if ch == None:
+            if ch == None or ch == '\n' or ch == '\r':
+                self.error("Missing closing quote")
                 break
             if ch == '\\':
                 self.token.add(self.getchar())
@@ -136,7 +137,8 @@ class Scanner:
     def grab_single(self):
         while True:
             ch = self.peekchar()
-            if ch == None:
+            if ch == None or ch == '\n' or ch == '\r':
+                self.error("Missing closing single quote")
                 break
             if ch == '\\':
                 self.token.add(self.getchar())
