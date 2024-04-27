@@ -78,7 +78,7 @@ def main(args):
             for i in tags:
                 print(i)
         else:
-            print("requires one argument txt file")
+            print("requires one argument url")
 
 if __name__ == "__main__":
     sys.exit(main(sys.argv))
