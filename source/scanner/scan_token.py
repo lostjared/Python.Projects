@@ -16,6 +16,8 @@ class Token:
         self.text = ""
         self.type = ""
 
+    def __str__(self):
+        return self.text + " -> [" + self.type_to_string(self.type) + "]"
 
     def type_to_string(self, type):
         match type:

@@ -1,6 +1,6 @@
 # pip install requests
 # for http download
-# scan for HTML tags
+# scan and extract HTML tags
 import sys
 import scanner
 import scan_token
