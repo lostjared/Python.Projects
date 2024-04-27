@@ -1,5 +1,5 @@
 
-import token
+import scan_token
 
 class Scanner:
     def __init__(self, input):
@@ -8,6 +8,7 @@ class Scanner:
         self.index = 0
         self.input_len = len(input)
         self.ch_map = dict()
+        self.err_on = True
         for i in range(0, 255):
             self.ch_map[chr(i)] = 0
         for i in range(ord('a'), ord('z') + 1):
@@ -37,8 +38,9 @@ class Scanner:
         self.ch_map['\''] = 5
 
     def error(self, s):
-        print("Error: " + s)
-        raise Exception
+        if self.err_on:
+            print("Error: " + s)
+            raise Exception
     
     def getchar(self):
         if self.index < self.input_len:
@@ -57,7 +59,7 @@ class Scanner:
             self.index += 1  
         if self.index >= self.input_len:
             return None
-        self.token = token.Token("", "")  
+        self.token = scan_token.Token("", "")  
         self.grab_next()
         return self.token
 

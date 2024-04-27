@@ -1,6 +1,6 @@
 import sys
 import scanner
-import token
+import scan_token
 
 
 def scan(file):
@@ -9,7 +9,7 @@ def scan(file):
         tokens = list()
         try: 
             while scan.next():
-                tokens.append(token.Token(scan.token.text, scan.token.type))
+                tokens.append(scan_token.Token(scan.token.text, scan.token.type))
                 scan.token.clear()
         except Exception:
             print ("Scanner: Syntax Error")
