@@ -1,5 +1,6 @@
 # pip install requests
 # for http download
+# example of Scanner
 # scan and extract HTML tags
 import sys
 import scanner
