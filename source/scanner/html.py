@@ -29,7 +29,6 @@ def scan(url):
         try: 
             while scan.next():
                 tokens.append(scan_token.Token(scan.token.text, scan.token.type))
-                scan.token.print()
                 scan.token.clear()
         except Exception:
             print ("Scanner: Syntax Error")
