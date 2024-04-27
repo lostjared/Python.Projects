@@ -10,7 +10,9 @@ class Scanner:
         self.ch_map = dict()
         if 'err_on' in kw:
             self.err_on = kw['err_on']
-            
+        else:
+            self.err_on = True
+
         for i in range(0, 255):
             self.ch_map[chr(i)] = 0
         for i in range(ord('a'), ord('z') + 1):
