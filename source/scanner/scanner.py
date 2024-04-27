@@ -124,7 +124,8 @@ class Scanner:
         while True:
             ch = self.peekchar()
             if ch == None or ch == '\n' or ch == '\r':
-                self.error("Missing closing quote")
+                if self.err_on == True:
+                    self.error("Missing closing quote")
                 break
             if ch == '\\':
                 self.token.add(self.getchar())
@@ -139,7 +140,8 @@ class Scanner:
         while True:
             ch = self.peekchar()
             if ch == None or ch == '\n' or ch == '\r':
-                self.error("Missing closing single quote")
+                if self.err_on == True:
+                    self.error("Missing closing single quote")
                 break
             if ch == '\\':
                 self.token.add(self.getchar())
