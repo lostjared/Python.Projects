@@ -37,14 +37,16 @@ def scan(url):
             sys.exit(1)
 
         return tokens
+    return None
 
 def main(args):
     if len(args) >= 2:
         tokens = scan(args[1])
-        for i in tokens:
-            i.print()
-    else:
-        print("requires one argument txt file")
+        if tokens != None:
+            for i in tokens:
+                i.print()
+        else:
+            print("requires one argument txt file")
 
 if __name__ == "__main__":
     sys.exit(main(sys.argv))
