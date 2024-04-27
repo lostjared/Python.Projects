@@ -2,13 +2,15 @@
 import scan_token
 
 class Scanner:
-    def __init__(self, input):
+    def __init__(self, input, **kw):
         self.input = input
         self.token = None
         self.index = 0
         self.input_len = len(input)
         self.ch_map = dict()
-        self.err_on = True
+        if 'err_on' in kw:
+            self.err_on = kw['err_on']
+            
         for i in range(0, 255):
             self.ch_map[chr(i)] = 0
         for i in range(ord('a'), ord('z') + 1):

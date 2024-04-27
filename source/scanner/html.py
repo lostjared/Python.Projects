@@ -24,8 +24,7 @@ def download(url):
 def scan(url):
     text = download(url)
     if text != None:
-        scan = scanner.Scanner(text)
-        scan.err_on = False
+        scan = scanner.Scanner(text, err_on=False)
         tokens = list()
         try: 
             while scan.next():
