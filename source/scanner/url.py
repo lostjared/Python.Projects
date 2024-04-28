@@ -80,10 +80,14 @@ def main(args):
                         tag = Tag(type, tok_list)
                         tags.append(tag)
                 index += 1
+
+            URLs = []
             for i in tags:
                 url = i.extract_url()
                 if url != None:
+                    URLs.append(url)
                     print(url)
+            
         else:
             print("requires one argument url")
 
