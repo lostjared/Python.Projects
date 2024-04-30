@@ -2,7 +2,7 @@ import sys
 
 class Vector:
     def __init__(self, seq):
-        self.seq = seq;
+        self.seq = seq
 
     def __len__(self):
         return len(self.seq)
