@@ -1,6 +1,5 @@
 import sys
 
-
 class Stack:
     def __init__(self):
         self.stack = []
@@ -41,7 +40,8 @@ def main(args):
     print("last %d" % (last))
     for i in stack:
         print(i)
-
+    d = { "test" : stack }
+    print(d["test"])
 
 if __name__ == "__main__":
     sys.exit(main(sys.argv))
