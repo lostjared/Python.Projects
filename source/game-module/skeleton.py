@@ -33,7 +33,9 @@ class GameInternal:
         sdl2.SDL_RenderCopy(rend.sdlrenderer, text, None, rect)
         sdl2.SDL_DestroyTexture(text)
         sdl2.SDL_FreeSurface(surf)
-
+    def draw_image(self, image, rend, dst):
+        rect = sdl2.SDL_Rect(dst[0], dst[1], dst[2], dst[3])
+        sdl2.SDL_RenderCopy(rend.sdlrenderer,image, None, rect)
 
 class XObject:
     def __init__(self, name, size,):
@@ -52,6 +54,7 @@ class XObject:
         time_t = 0
         self.gameobj.set_window(window)
         self.font = self.gameobj.load_font("font.ttf", 24)
+        self.gameobj.load_gfx()
         window.show()
         running = True
         while running:
@@ -72,6 +75,7 @@ class XObject:
                 time_t = 0
             window.refresh()
     
+        self.gameobj.cleanup()
         sdl2.sdlttf.TTF_CloseFont(self.font)
         sdl2.sdlttf.TTF_Quit()
         sdl2.ext.quit()

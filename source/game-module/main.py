@@ -7,11 +7,27 @@ import sdl2.ext;
 class Game(skeleton.GameInternal):
     def __init__(self):
         self.text = "Hello, World! Press a Key"
+      
+    def load_gfx(self):
+        self.image = sdl2.surface.SDL_LoadBMP("intro.bmp".encode('utf-8'))
+        if not self.image:
+            raise Exception
+        self.tex = self.create_texture_from_surface(self.renderer, self.image)
+        if not self.tex:
+            raise Exception
+        sdl2.SDL_FreeSurface(self.image)
+
+
+    def cleanup(self):
+        sdl2.SDL_DestroyTexture(self.tex)
+
+
     def set_window(self, window):
         self.renderer = sdl2.ext.Renderer(window)
     
     def draw(self, font):
         self.renderer.clear()
+        self.draw_image(self.tex, self.renderer, (0, 0, 1440, 1080))
         self.printtext(self.renderer, font, self.text, (255, 255, 255), (15, 15))
         self.renderer.present()
     
