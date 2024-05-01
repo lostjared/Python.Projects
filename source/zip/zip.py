@@ -12,6 +12,8 @@ def main(args):
         lst = args[2:len(args)]
         zip_files(args[1], lst)
         print("zipped: %s %s", args[1], str(lst))
+    else:
+        print("arguments: zip_name file1")
     return 0
 
 if __name__ == "__main__":
