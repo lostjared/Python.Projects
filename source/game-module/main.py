@@ -4,6 +4,15 @@ import sys
 import sdl2
 import sdl2.ext;
 
+# Game class must contain
+
+# load_gfx(self)
+# cleanup(self)
+# draw(self, font)
+# event(self, e)
+# proc(self)
+
+
 class Game(skeleton.GameInternal):
     def __init__(self):
         self.text = "Hello, World! Press a Key"
