@@ -30,6 +30,7 @@ def main(args):
     v1 = Vector((1,2))
     print(v1)
     print(repr(v1))
+    print(v1[0])
 
     v3 = Vector( [range(25) ])
     for i in v3:
