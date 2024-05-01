@@ -13,6 +13,6 @@ def main(args):
         zip_files(args[1], lst)
         print("zipped: %s %s", args[1], str(lst))
     return 0
-\
+
 if __name__ == "__main__":
     sys.exit(main(sys.argv))
