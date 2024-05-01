@@ -13,6 +13,8 @@ def main(args):
     if len(args) >= 2:
         zip_directory(args[1], args[2])
         print("%s -> %s" %(args[1], args[2]))
+    else:
+        print("arguments: directory zipfilename.zip")
     return 0
 \
 if __name__ == "__main__":
