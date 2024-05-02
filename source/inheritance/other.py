@@ -13,16 +13,20 @@ class File(Obj):
     def __init__(self, path, dir):
         self.path = path
         self.dir = dir
+        self.type = "File"
+
     def __str__(self):
         if self.dir == True:
             return self.path + "/"
         return self.path
     def __repr__(self):
         return self.__str__()
+
 class FileSystem(Obj):
     def __init__(self, path):
         lst = os.listdir(path)
         self.files = []
+        self.type = "FileSystem"
         for i in lst:
             self.files.append(File(i, False))
     def __str__(self):
@@ -36,6 +40,9 @@ def main(args):
     if len(args) >= 2:
         fs = FileSystem(args[1])
         print(str(fs))
+        print(fs.type)
+        if len(fs) > 0:
+            print(fs[0].type)
     else:
         print("argument: path")
 
