@@ -30,7 +30,10 @@ def main(args):
         line_number = 0
         blank_lines = 0
         for i in files:
-            if i.endswith((".cpp", ".hpp", ".c", ".h", ".m", ".mm", ".cc", ".py", ".rs")):
+            lower_type = i.lower()
+            if lower_type.endswith((".cpp", ".hpp", ".c", ".h", ".m", ".mm", ".cc", ".py", ".rs")):
+                f_type = lower_type[lower_type.rfind(".")+1:]
+                print("TYPE:" + f_type)
                 value = count_lines(i)
                 print(" file [%s] lines: [%d] blanks [%d] total [%d]" % (i, value[0], value[1], value[2]))
                 line_number += value[0]
