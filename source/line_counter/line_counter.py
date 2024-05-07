@@ -47,7 +47,7 @@ def main(args):
 
         for i in file_types.keys():
             if file_types[i][1] > 0:
-                print("%d lines %d blanks %d total of %s in project" % ( file_types[i][1], file_types[i][2], file_types[i][1]+file_types[i][2], file_types[i][0] ) )
+                print("%d lines %d blanks %d total of %s (%s) in project" % ( file_types[i][1], file_types[i][2], file_types[i][1]+file_types[i][2], file_types[i][0], i) )
 
     else:
         print("arguments: dir")
