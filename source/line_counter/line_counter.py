@@ -29,15 +29,18 @@ def main(args):
         files = proc_directory(args[1])
         line_number = 0
         blank_lines = 0
+
+        file_types = { ".c": ["C", 0], ".cpp":["C++", 0],".hpp":["C++", 0], ".h":["C/C++ header", 0],".m":["Objective-C",0], ".mm":["Objective-C++",0], ".cc":["C++",0], ".py":["Python", 0], ".rs": ["Rust",0] }
+
         for i in files:
             lower_type = i.lower()
             if lower_type.endswith((".cpp", ".hpp", ".c", ".h", ".m", ".mm", ".cc", ".py", ".rs")):
-                f_type = lower_type[lower_type.rfind(".")+1:]
-                print("TYPE:" + f_type)
+                f_type = lower_type[lower_type.rfind("."):]
                 value = count_lines(i)
                 print(" file [%s] lines: [%d] blanks [%d] total [%d]" % (i, value[0], value[1], value[2]))
                 line_number += value[0]
                 blank_lines += value[1]
+
         print("lines %d , blanks %d, total %d" % (line_number, blank_lines, line_number + blank_lines))
     else:
         print("arguments: dir")
