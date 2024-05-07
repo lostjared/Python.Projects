@@ -30,18 +30,25 @@ def main(args):
         line_number = 0
         blank_lines = 0
 
-        file_types = { ".c": ["C", 0], ".cpp":["C++", 0],".hpp":["C++", 0], ".h":["C/C++ header", 0],".m":["Objective-C",0], ".mm":["Objective-C++",0], ".cc":["C++",0], ".py":["Python", 0], ".rs": ["Rust",0] }
+        file_types = { ".c": ["C", 0, 0], ".cpp":["C++", 0, 0],".hpp":["C++", 0, 0], ".h":["C/C++ header", 0, 0],".m":["Objective-C",0, 0], ".mm":["Objective-C++",0, 0], ".cc":["C++",0, 0], ".py":["Python", 0, 0], ".rs": ["Rust",0, 0] }
 
         for i in files:
             lower_type = i.lower()
             if lower_type.endswith((".cpp", ".hpp", ".c", ".h", ".m", ".mm", ".cc", ".py", ".rs")):
                 f_type = lower_type[lower_type.rfind("."):]
                 value = count_lines(i)
-                print(" file [%s] lines: [%d] blanks [%d] total [%d]" % (i, value[0], value[1], value[2]))
+                print("%s:[%s] lines: [%d] blanks [%d] total [%d]" % (file_types[f_type][0], i, value[0], value[1], value[2]))
                 line_number += value[0]
                 blank_lines += value[1]
+                file_types[f_type][1] += value[0]
+                file_types[f_type][2] += value[1]
 
         print("lines %d , blanks %d, total %d" % (line_number, blank_lines, line_number + blank_lines))
+
+        for i in file_types.keys():
+            if file_types[i][1] > 0:
+                print("%d lines %d blanks %d total of %s in project" % ( file_types[i][1], file_types[i][2], file_types[i][1]+file_types[i][2], file_types[i][0] ) )
+
     else:
         print("arguments: dir")
 
