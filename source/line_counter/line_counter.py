@@ -49,7 +49,7 @@ def main(args):
         print("Total liines %d, blanks %d, total %d in %d file(s)..." % (line_number, blank_lines, line_number + blank_lines, file_count))
         for i in file_types.keys():
             if file_types[i][1] > 0:
-                print("%d %s file(s) %d lines, %d blanks, %d total of %s (%s) in project" % (file_types[i][3],file_types[i][0],file_types[i][1], file_types[i][2], file_types[i][1]+file_types[i][2], file_types[i][0], i) )
+                print("%d %s file(s) %d lines, %d blank lines, %d total lines of %s (%s) in project" % (file_types[i][3],file_types[i][0],file_types[i][1], file_types[i][2], file_types[i][1]+file_types[i][2], file_types[i][0], i) )
     else:
         print("arguments: dir")
 
