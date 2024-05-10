@@ -32,7 +32,7 @@ def main(args):
 
         file_types = { ".c": ["C", 0, 0, 0], ".cpp":["C++", 0, 0, 0],".hpp":["C++", 0, 0, 0], ".h":["C/C++ header", 0, 0, 0],".m":["Objective-C",0, 0, 0], ".mm":["Objective-C++",0, 0, 0], ".cc":["C++",0, 0, 0], ".py":["Python", 0, 0, 0], ".rs": ["Rust",0, 0, 0] }
         file_count = 0
-        for i in files:
+        for i in sorted(files):
             lower_type = i.lower()
             if lower_type.endswith((".cpp", ".hpp", ".c", ".h", ".m", ".mm", ".cc", ".py", ".rs")):
                 f_type = lower_type[lower_type.rfind("."):]
