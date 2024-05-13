@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # converts raw image files (.raw rw2) to png or jpg files
 # reads the files you want to convert from a text file
 # requires rawpy and imageio
