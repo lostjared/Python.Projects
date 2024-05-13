@@ -8,7 +8,7 @@
 # filelist.txt png
 # filelist.txt jpg
 # to generate the list use
-# ls | grep  '.raw' > list.txt
+# ls | egrep -i '.raw' > list.txt
 # or something similar
 
 import rawpy
