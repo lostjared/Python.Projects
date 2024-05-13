@@ -31,7 +31,7 @@ to build the list file
 Use the following command to run the script:
 
 ```bash
-python script.py filelist.txt output_format
+python raw2img.py filelist.txt output_format
 ```
 
 - `filelist.txt`: The text file containing the list of RAW files to be converted.
@@ -40,7 +40,7 @@ python script.py filelist.txt output_format
 ### Example
 
 ```bash
-python script.py filelist.txt png
+python raw2img.py filelist.txt png
 ```
 
 ## Notes
