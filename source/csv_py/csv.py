@@ -131,7 +131,7 @@ class XCsv:
 
 def main(args):
     if len(sys.argv) != 2:
-        print("incorrect arguments", file=sys.stderr)
+        print("incorrect arguments:\ncsv.py csv_file.csv", file=sys.stderr)
         sys.exit(1)
     
     # example usage
