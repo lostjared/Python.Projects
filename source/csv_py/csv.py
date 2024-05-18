@@ -138,16 +138,21 @@ def main(args):
     
     # example usage
     xcsv = XCsv()
+#load file
     xcsv.load_file(sys.argv[1], ',')
+    #add a new row
     xcsv.add_row(["Apple", "Data", "Siren", "Thought"])
+    #add another roww
     xcsv.add_row(["Turtle", "Duck", "Quck", "Meow"])
+    #save modified csv file with ,   sas []
     xcsv.save_file("test1.txt", ',')
+
+    #print out  patonm  Row(vertical) col (OIfozngal
     print("at(0,1) = " + xcsv.at(0, 1))
     print("at(2,2) + " + xcsv.at(2, 2))
-
-    for row in xcsv.table:
-        for i in row:
-            print(i)
+    #for row in xcsv.table:
+        #for i in row:
+            #print(i)
 
 if __name__ == "__main__":
     sys.exit(main(sys.argv))
