@@ -7,6 +7,18 @@ import random
 grid_width = 1440/32
 grid_height = (1080/4)/16
 
+def draw_gradient_rect(renderer, rect, start_color, end_color):
+    color_step = [
+        (end_color[i] - start_color[i]) / rect.h for i in range(3)
+    ]
+    for row in range(rect.h):
+        color = [
+            int(start_color[i] + color_step[i] * row) for i in range(3)
+        ]
+        sdl2.SDL_SetRenderDrawColor(renderer.sdlrenderer, color[0], color[1], color[2], 255)
+        row_rect = sdl2.SDL_Rect(rect.x, rect.y + row, rect.w, 1)
+        sdl2.SDL_RenderFillRect(renderer.sdlrenderer, row_rect)
+
 
 class Paddle:
     def __init__(self):
@@ -15,9 +27,9 @@ class Paddle:
         self.x = int(1440/2-(self.width/2))
     def draw(self, renderer):
         rect = sdl2.SDL_Rect(self.x, self.y, self.width, 25)
+        start_color = (150, 150, 150)
         color = (255,255,255)
-        sdl2.SDL_SetRenderDrawColor(renderer.sdlrenderer, color[0], color[1], color[2], 255)
-        sdl2.SDL_RenderFillRect(renderer.sdlrenderer, rect)
+        draw_gradient_rect(renderer, rect, start_color, color)
     def move_left(self):
         if self.x > 10:
             self.x -= 10
@@ -31,6 +43,8 @@ class Grid:
         self.cols = int(width)
         self.grid = [[0 for _ in range(self.rows)] for _ in range(self.cols)]
         self.reset()
+        
+
     def reset(self):
         for i in range(self.cols):
             for z in range(self.rows):
@@ -54,10 +68,11 @@ class Grid:
     def draw(self, renderer): 
         for x in range(self.cols):
             for y in range(self.rows):
-                rect = sdl2.SDL_Rect(x*32, y*16, 32, 16)
+                rect = sdl2.SDL_Rect(x*32, y*16, 30, 14)
                 color = self.to_color(self.grid[x][y])
-                sdl2.SDL_SetRenderDrawColor(renderer.sdlrenderer, color[0], color[1], color[2], 255)
-                sdl2.SDL_RenderFillRect(renderer.sdlrenderer, rect)
+                if(self.grid[x][y] != 0):
+                    sdl2.SDL_SetRenderDrawColor(renderer.sdlrenderer, color[0], color[1], color[2], 255)
+                    sdl2.SDL_RenderFillRect(renderer.sdlrenderer, rect)
     def is_empty(self):  
         for row in self.grid:
             if any(cell != 0 for cell in row):

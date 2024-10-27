@@ -54,6 +54,7 @@ class XObject:
         self.font = self.gameobj.load_font("font.ttf", 24)
         window.show()
         running = True
+        
         while running:
             events = sdl2.ext.get_events()
             for event  in events:

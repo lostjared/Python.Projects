@@ -18,13 +18,19 @@ class Game(skeleton.GameInternal):
         self.keys[sdl2.SDLK_RIGHT] = 0
         self.mode = 0
         self.end_score = 0
+       
 
     def set_window(self, window):
         self.renderer = sdl2.ext.Renderer(window)
+        self.bg = sdl2.SDL_LoadBMP(b"./img/bg.bmp")
+        if not self.bg:
+            print("Error loading image:", sdl2.SDL_GetError())
+        self.background = self.create_texture_from_surface(self.renderer,self.bg)
     
     def draw(self, font):
         sdl2.SDL_SetRenderDrawColor(self.renderer.sdlrenderer, 0, 0, 0, 255)
         self.renderer.clear()
+        sdl2.SDL_RenderCopy(self.renderer.sdlrenderer, self.background, None, None)
         if self.mode == 0:
             self.grid.draw(self.renderer)
             self.paddle.draw(self.renderer)
