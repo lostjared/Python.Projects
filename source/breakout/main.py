@@ -20,19 +20,33 @@ class Game(skeleton.GameInternal):
         self.end_score = 0
        
 
+    def load_image(self, src):
+        img = sdl2.SDL_LoadBMP(src)
+        if not img:
+            print("Error loading image: ", sdl2.SDL_GetError())
+        tex = self.create_texture_from_surface(self.renderer, img)
+        if not tex:
+            print("Error loading texture: ", sdl2.SDL_GetError())
+        return tex
+
     def set_window(self, window):
         self.renderer = sdl2.ext.Renderer(window)
-        self.bg = sdl2.SDL_LoadBMP(b"./img/bg.bmp")
-        if not self.bg:
-            print("Error loading image:", sdl2.SDL_GetError())
-        self.background = self.create_texture_from_surface(self.renderer,self.bg)
+        self.background = self.load_image(b"./img/bg.bmp")
+        img_files = (b"./img/block_ltblue.bmp", b"./img/block_dblue.bmp", b"./img/block_pink.bmp", b"./img/block_yellow.bmp", b"./img/block_red.bmp")
+        self.img_tex = list()
+        self.img_tex.append(None)
+        for i in range(0, len(img_files)):
+            self.img_tex.append(self.load_image(img_files[i]))
+
+
+
     
     def draw(self, font):
         sdl2.SDL_SetRenderDrawColor(self.renderer.sdlrenderer, 0, 0, 0, 255)
         self.renderer.clear()
         sdl2.SDL_RenderCopy(self.renderer.sdlrenderer, self.background, None, None)
         if self.mode == 0:
-            self.grid.draw(self.renderer)
+            self.grid.draw(self.renderer, self.img_tex)
             self.paddle.draw(self.renderer)
             self.ball.draw(self.renderer)
             self.printtext(self.renderer, font, "Score: %d Lives: %d" %(self.ball.score, self.ball.lives), (255, 255, 255), (15, 275))

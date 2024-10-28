@@ -50,29 +50,13 @@ class Grid:
             for z in range(self.rows):
                 self.grid[i][z] = random.randint(0, 5)
 
-
-    def to_color(self, index):
-        if index == 0:
-            return (0, 0, 0)
-        elif index == 1:
-            return (255, 0, 0)
-        elif index == 2:
-            return (255,  255, 0)
-        elif index == 3:
-            return  (0, 255, 0)
-        elif index == 4:
-            return (0, 0, 255)
-        else:
-            return (255, 0, 255)
-
-    def draw(self, renderer): 
+    def draw(self, renderer, img_tex): 
         for x in range(self.cols):
             for y in range(self.rows):
-                rect = sdl2.SDL_Rect(x*32, y*16, 30, 14)
-                color = self.to_color(self.grid[x][y])
+                rect = sdl2.SDL_Rect(x*32, y*16, 32, 16)
+                
                 if(self.grid[x][y] != 0):
-                    sdl2.SDL_SetRenderDrawColor(renderer.sdlrenderer, color[0], color[1], color[2], 255)
-                    sdl2.SDL_RenderFillRect(renderer.sdlrenderer, rect)
+                    sdl2.SDL_RenderCopy(renderer.sdlrenderer, img_tex[self.grid[x][y]], None, rect)
     def is_empty(self):  
         for row in self.grid:
             if any(cell != 0 for cell in row):
