@@ -21,7 +21,7 @@ class GameInternal:
         return surface
     
     def create_texture_from_surface(self, renderer, surface):
-        texture = sdl2.SDL_CreateTextureFromSurface(renderer.sdlrenderer, surface)
+        texture = sdl2.ext.renderer.Texture(renderer.sdlrenderer, surface)
         if not texture:
             print("Failed to create texture: %s" % sdl2.SDL_GetError())
         return texture
@@ -30,12 +30,13 @@ class GameInternal:
         surf = self.create_text_surface(font, text, color)
         text = self.create_texture_from_surface(rend, surf)
         rect = sdl2.SDL_Rect(dst[0], dst[1], surf.contents.w, surf.contents.h)
-        sdl2.SDL_RenderCopy(rend.sdlrenderer, text, None, rect)
-        sdl2.SDL_DestroyTexture(text)
+        rend.copy(text, None, rect)
         sdl2.SDL_FreeSurface(surf)
+        text.destroy()
+        
     def draw_image(self, image, rend, dst):
         rect = sdl2.SDL_Rect(dst[0], dst[1], dst[2], dst[3])
-        sdl2.SDL_RenderCopy(rend.sdlrenderer,image, None, rect)
+        rend.copy(image, None, dst)
 
 class XObject:
     def __init__(self, name, size,):
@@ -49,7 +50,7 @@ class XObject:
             print("TTF_Font: %s" % sdl2.sdlttf.TTF_GetError())
             return 1
         
-        window =  sdl2.ext.Window(self.name, size=self.size)
+        window = sdl2.ext.Window(self.name, size=self.size)
         ticks = sdl2.SDL_GetTicks()
         time_t = 0
         self.gameobj.set_window(window)
@@ -73,9 +74,7 @@ class XObject:
             if(time_t > 1000):
                 self.gameobj.proc()
                 time_t = 0
-            window.refresh()
-    
-        self.gameobj.cleanup()
+        window.refresh()
         sdl2.sdlttf.TTF_CloseFont(self.font)
         sdl2.sdlttf.TTF_Quit()
         sdl2.ext.quit()
