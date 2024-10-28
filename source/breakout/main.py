@@ -27,8 +27,16 @@ class Game(skeleton.GameInternal):
         tex = self.create_texture_from_surface(self.renderer, img)
         if not tex:
             print("Error loading texture: ", sdl2.SDL_GetError())
+        sdl2.SDL_FreeSurface(img)
         return tex
 
+    def release(self):
+        sdl2.SDL_DestroyTexture(self.background)
+        for i in self.img_tex:
+            sdl2.SDL_DestroyTexture(i)
+        sdl2.SDL_DestroyTexture(self.start_img)
+        sdl2.SDL_DestroyTexture(self.gameover)
+        
     def set_window(self, window):
         self.renderer = sdl2.ext.Renderer(window)
         self.background = self.load_image(b"./img/bg.bmp")

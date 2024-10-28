@@ -74,6 +74,9 @@ class XObject:
                 time_t = 0
             window.refresh()
     
+        self.gameobj.release()
+        sdl2.SDL_DestroyWindow(window.window)
+        sdl2.SDL_DestroyRenderer(self.gameobj.renderer.sdlrenderer)
         sdl2.sdlttf.TTF_CloseFont(self.font)
         sdl2.sdlttf.TTF_Quit()
         sdl2.ext.quit()
