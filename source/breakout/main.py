@@ -48,7 +48,7 @@ class Game(skeleton.GameInternal):
         self.renderer.clear()
         if self.mode == 2:
             sdl2.SDL_RenderCopy(self.renderer.sdlrenderer, self.start_img, None, None)
-            self.printtext(self.renderer, font, "[Press Enter to Play]", (255,255,255), (15, 275))
+            self.printtext(self.renderer, font, "[Press Enter to Play]", (255,255,255), (25, 25))
         if self.mode == 0:
             sdl2.SDL_RenderCopy(self.renderer.sdlrenderer, self.background, None, None)
             self.grid.draw(self.renderer, self.img_tex)
