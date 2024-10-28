@@ -21,7 +21,7 @@ class GameInternal:
         return surface
     
     def create_texture_from_surface(self, renderer, surface):
-        texture = sdl2.SDL_CreateTextureFromSurface(renderer.sdlrenderer, surface)
+        texture = sdl2.ext.Texture(renderer.sdlrenderer, surface)
         if not texture:
             print("Failed to create texture: %s" % sdl2.SDL_GetError())
         return texture
@@ -30,9 +30,11 @@ class GameInternal:
         surf = self.create_text_surface(font, text, color)
         text = self.create_texture_from_surface(rend, surf)
         rect = sdl2.SDL_Rect(int(dst[0]), int(dst[1]), int(surf.contents.w), int(surf.contents.h))
-        sdl2.SDL_RenderCopy(rend.sdlrenderer, text, None, rect)
-        sdl2.SDL_DestroyTexture(text)
+        rend.copy(text, None, rect)
+        text.destroy()
+        text = None
         sdl2.SDL_FreeSurface(surf)
+        surf = None
 
 
 class XObject:
@@ -75,8 +77,11 @@ class XObject:
             window.refresh()
     
         self.gameobj.release()
-        sdl2.SDL_DestroyWindow(window.window)
         sdl2.SDL_DestroyRenderer(self.gameobj.renderer.sdlrenderer)
+        self.gameobj.renderer = None
+        window.close()
+        window = None    
+        self.gameobj.renderer = None
         sdl2.sdlttf.TTF_CloseFont(self.font)
         sdl2.sdlttf.TTF_Quit()
         sdl2.ext.quit()

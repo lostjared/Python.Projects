@@ -31,11 +31,9 @@ class Game(skeleton.GameInternal):
         return tex
 
     def release(self):
-        sdl2.SDL_DestroyTexture(self.background)
-        for i in self.img_tex:
-            sdl2.SDL_DestroyTexture(i)
-        sdl2.SDL_DestroyTexture(self.start_img)
-        sdl2.SDL_DestroyTexture(self.gameover)
+        self.background.destroy()
+        self.start_img.destroy()
+        self.gameover.destroy()
         
     def set_window(self, window):
         self.renderer = sdl2.ext.Renderer(window)
@@ -47,24 +45,21 @@ class Game(skeleton.GameInternal):
             self.img_tex.append(self.load_image(img_files[i]))
         self.start_img = self.load_image(b"./img/start.bmp")
         self.gameover =  self.load_image(b"./img/gameover.bmp")
-
-
-
     
     def draw(self, font):
         sdl2.SDL_SetRenderDrawColor(self.renderer.sdlrenderer, 0, 0, 0, 255)
         self.renderer.clear()
         if self.mode == 2:
-            sdl2.SDL_RenderCopy(self.renderer.sdlrenderer, self.start_img, None, None)
+            self.renderer.copy(self.start_img, None, None)
             self.printtext(self.renderer, font, "[Press Enter to Play]", (255,255,255), (25, 25))
         if self.mode == 0:
-            sdl2.SDL_RenderCopy(self.renderer.sdlrenderer, self.background, None, None)
+            self.renderer.copy(self.background, None, None)
             self.grid.draw(self.renderer, self.img_tex)
             self.paddle.draw(self.renderer)
             self.ball.draw(self.renderer)
             self.printtext(self.renderer, font, "Score: %d Lives: %d" %(self.ball.score, self.ball.lives), (255, 255, 255), (15, 275))
         elif self.mode == 1:
-            sdl2.SDL_RenderCopy(self.renderer.sdlrenderer, self.gameover, None, None)
+            self.renderer.copy(self.gameover, None, None)
             self.printtext(self.renderer, font, "Game Over - [ Score: %d ] Press Return" % (self.end_score), (255, 255, 255), (100, 100))
         self.renderer.present()
     

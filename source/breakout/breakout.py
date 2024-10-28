@@ -54,9 +54,8 @@ class Grid:
         for x in range(self.cols):
             for y in range(self.rows):
                 rect = sdl2.SDL_Rect(x*32, y*16, 32, 16)
-                
                 if(self.grid[x][y] != 0):
-                    sdl2.SDL_RenderCopy(renderer.sdlrenderer, img_tex[self.grid[x][y]], None, rect)
+                    renderer.copy(img_tex[self.grid[x][y]], None, rect)
     def is_empty(self):  
         for row in self.grid:
             if any(cell != 0 for cell in row):
