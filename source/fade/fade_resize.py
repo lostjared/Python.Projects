@@ -1,7 +1,10 @@
+#!/usr/bin/env python3
+
 import cv2
 import numpy as np
 import sys
 import os
+import argparse
 
 OUTPUT_FILE = "fade_output_video.mp4"
 FPS = 30.0
@@ -21,26 +24,27 @@ def parse_resolution(res_str):
         w_str, h_str = res_str.lower().split('x')
         return int(w_str), int(h_str)
     except ValueError:
-        print(f"Error: Invalid resolution format '{res_str}'. Use format 'WIDTHxHEIGHT' (e.g., 640x480).")
-        sys.exit(1)
+        raise argparse.ArgumentTypeError(f"Invalid resolution '{res_str}'. Use format WIDTHxHEIGHT (e.g., 640x480).")
 
 def main():
-    if len(sys.argv) < 2:
-        print("Usage: python video_fader.py <image_list.txt> [WIDTHxHEIGHT]")
-        print("Example: python video_fader.py list.txt 480x480")
-        return
+    parser = argparse.ArgumentParser(description="Create a video from a list of images with fade transitions.")
+    
+    parser.add_argument("image_list", help="Path to the text file containing image paths")
+    parser.add_argument("-r", "--resolution", type=parse_resolution, help="Output resolution in WIDTHxHEIGHT format (e.g., 640x480)")
+    parser.add_argument("-o", "--output", default=OUTPUT_FILE, help="Output video filename")
 
-    list_file = sys.argv[1]
-    image_paths = load_image_list(list_file)
+    args = parser.parse_args()
+
+    image_paths = load_image_list(args.image_list)
 
     if not image_paths:
         print("No images found in the text file.")
         return
 
-    target_size = None
-    
-    if len(sys.argv) >= 3:
-        target_size = parse_resolution(sys.argv[2])
+    target_size = args.resolution
+    output_filename = args.output
+
+    if target_size:
         print(f"Forcing output resolution to: {target_size[0]}x{target_size[1]}")
 
     first_img = cv2.imread(image_paths[0])
@@ -59,7 +63,7 @@ def main():
         first_img = cv2.resize(first_img, (video_w, video_h))
 
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-    out = cv2.VideoWriter(OUTPUT_FILE, fourcc, FPS, (video_w, video_h))
+    out = cv2.VideoWriter(output_filename, fourcc, FPS, (video_w, video_h))
 
     if not out.isOpened():
         print("Error: Could not open video writer.")
@@ -100,7 +104,7 @@ def main():
         out.write(current_img)
 
     out.release()
-    print(f"Done! Video saved to: {os.path.abspath(OUTPUT_FILE)}")
+    print(f"Done! Video saved to: {os.path.abspath(output_filename)}")
 
 if __name__ == "__main__":
     main()
