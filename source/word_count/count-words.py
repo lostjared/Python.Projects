@@ -24,7 +24,7 @@ def count_words(string_value):
         words[word] = words.get(word, 0) + 1
         count = count + 1
     print_words(words)
-    return count
+    return count, len(words)
 
 
 def main():
@@ -37,8 +37,8 @@ def main():
             try:
                 with open(filename, 'r') as f:
                     text = f.read().lower()
-                    words = count_words(text)
-                    print("total count: " +  str(words))
+                    words,  uniq  = count_words(text)
+                    print("total count: " +  str(words) + " unique words; " + str(uniq))
             except FileNotFoundError:
                 print("Error " + fiename + " not found")
 
