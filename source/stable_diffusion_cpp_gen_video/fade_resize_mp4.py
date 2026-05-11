@@ -30,8 +30,8 @@ def parse_resolution(res_str):
 
 def main():
     if len(sys.argv) < 2:
-        print("Usage: python video_fader.py <image_list.txt> [WIDTHxHEIGHT]")
-        print("Example: python video_fader.py list.txt 480x480")
+        print("Usage: python fade_resize_mp4.py <image_list.txt> [WIDTHxHEIGHT]")
+        print("Example: python fade_resize_mp4.py list.txt 480x480")
         return
 
     list_file = sys.argv[1]
