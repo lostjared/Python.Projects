@@ -15,9 +15,10 @@ model_dir = "./my_glitch_models"
 temp_export = "temp_export.onnx"
 venv_python = "glitch_env/bin/python"
 
-print("Setting GPU power limits and persistence mode...")
-subprocess.run(["sudo", "nvidia-smi", "-pm", "1"], check=True)
-subprocess.run(["sudo", "nvidia-smi", "-pl", "130"], check=True)
+#commented out, I use this to to keep my GPU cool while its training
+#print("Setting GPU power limits and persistence mode...")
+#subprocess.run(["sudo", "nvidia-smi", "-pm", "1"], check=True)
+#subprocess.run(["sudo", "nvidia-smi", "-pl", "130"], check=True)
 
 print(f"Starting training against {style_image}...")
 subprocess.run([
