@@ -232,6 +232,8 @@ def append_batch(frames, first_frame_number, writer, video_size, fps, args):
         if size != video_size:
             raise RuntimeError(f'Upscaled frame size changed from {video_size} to {size}')
         writer.write(frame)
+        cv2.imshow("window", frame)
+        cv2.waitKey(1)
 
     return writer, video_size
 
